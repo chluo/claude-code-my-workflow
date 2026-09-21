@@ -189,7 +189,7 @@ This workflow is designed as a **single hub for an entire research program** —
 ## What's Included
 
 <details>
-<summary><strong>18 agents, 60 skills, 37 rules, 8 hooks</strong> (click to expand)</summary>
+<summary><strong>18 agents, 61 skills, 38 rules, 8 hooks</strong> (click to expand)</summary>
 
 ### Agents (`.claude/agents/`)
 
@@ -246,6 +246,7 @@ This workflow is designed as a **single hub for an entire research program** —
 | `/research-ideation` | Generate research questions and empirical strategies |
 | `/interview-me` | Interactive interview to formalize a research idea |
 | `/review-paper` | Manuscript review: structure, econometrics, referee objections |
+| `/draft-paper` | Draft a full manuscript from analysis outputs, then auto-run the complete QA/finalize pipeline |
 | `/data-analysis` | End-to-end R analysis with publication-ready output |
 | `/learn` | Extract non-obvious discoveries into persistent skills |
 | `/context-status` | Show session health and context usage |

@@ -1,0 +1,92 @@
+% =============================================================================
+% Preambles/paper-header.tex — shared LaTeX preamble for MANUSCRIPTS (not slides)
+%
+% Sibling to Preambles/header.tex (the Beamer/Quarto slide preamble). Use this
+% one for a research paper via:
+%     \input{../Preambles/paper-header}
+% from templates/paper/paper-template.tex or any manuscript in Paper/.
+%
+% DESIGN GOAL: a professional working-paper look out of the box — no visible
+% hyperlink boxes, a real title/author grid, booktabs tables, natbib citations.
+% See .claude/rules/paper-writing-craft.md §4 for the rationale behind each
+% choice below.
+% =============================================================================
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+\fi
+
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}      % \toprule/\midrule/\bottomrule — never hand-drawn \hline grids
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% -----------------------------------------------------------------------------
+% Font — Latin Modern by default (a cleaner-rendering Computer Modern, not a
+% jarring departure). Uncomment ONE warmer-serif alternative if you prefer it;
+% keep both preamble and any Quarto-side font choice consistent if you also
+% maintain a Quarto mirror of this content.
+% -----------------------------------------------------------------------------
+\usepackage{lmodern}
+% \usepackage{mathpazo}                    % Palatino-based text + math
+% \usepackage{newtxtext,newtxmath}         % Times-based text + math
+
+% -----------------------------------------------------------------------------
+% Epigraph support — optional narrative device (paper-writing-craft.md §2).
+% Use sparingly: \epigraph{quote}{attribution} once, in the introduction.
+% -----------------------------------------------------------------------------
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{0.85\textwidth}
+\renewcommand{\epigraphflush}{flushleft}
+\renewcommand{\epigraphrule}{0pt}
+
+% -----------------------------------------------------------------------------
+% Hyperref — loaded near the end per standard practice. `hidelinks` suppresses
+% BOTH the colored text and the visible frame that hyperref's un-configured
+% default draws around every citation and cross-reference. That boxed-link
+% look is the single most common "unpolished draft" tell — see
+% paper-writing-craft.md §4. Swap to colorlinks=true below if you prefer subtle
+% color over fully plain text; never ship the bare, unconfigured default.
+% -----------------------------------------------------------------------------
+\usepackage[hidelinks]{hyperref}
+% \usepackage{hyperref}
+% \hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black}
+
+\usepackage[authoryear,round]{natbib}   % author-year citations; swap `round` for `square` to taste
+\bibliographystyle{apalike}             % or econometrica.bst / aer.bst if your journal target ships one
+
+% -----------------------------------------------------------------------------
+% Title / author / affiliation block — a centered multi-column grid rather
+% than a single flush-left author line, for papers with more than one author.
+% Usage in the manuscript:
+%
+%   \title{[TITLE]}
+%   \authorgrid{
+%     \shortstack{[Author One] \\ \small [Affiliation One]} &
+%     \shortstack{[Author Two] \\ \small [Affiliation Two]}
+%   }
+%   \date{[DATE]}
+%   \maketitle
+%   \thispagestyle{empty}
+% -----------------------------------------------------------------------------
+\newcommand{\authorgrid}[1]{%
+  \author{\begin{tabular}[t]{@{}c@{\hspace{2.5em}}c@{}}#1\end{tabular}}%
+}
+
+% -----------------------------------------------------------------------------
+% Abstract environment — the standard `article` class's own `abstract`
+% environment already renders a centered bold "Abstract" header followed by an
+% indented, distinguishable block, which is exactly the professional
+% convention paper-writing-craft.md §4 asks for. No redefinition needed —
+% just use \begin{abstract}...\end{abstract} in the manuscript body.
+% -----------------------------------------------------------------------------
+
+% -----------------------------------------------------------------------------
+% Acknowledgment footnote convention — attach to \title via \thanks{...}, e.g.
+%   \title{[TITLE]\thanks{We thank [names] for helpful comments. [RA credits].}}
+% renders as a numbered footnote on the first page, not inline text.
+% -----------------------------------------------------------------------------

@@ -1,0 +1,108 @@
+% =============================================================================
+% templates/paper/paper-template.tex — generic starting manuscript
+%
+% Copy this file into Paper/ (or wherever your manuscript lives) and fill in
+% the [BRACKETED] placeholders. Structure follows the checklist in
+% .claude/rules/paper-writing-craft.md §2 — do not reorder sections without
+% re-reading why that order is there.
+%
+% Compile (mirrors the Slides/*.tex convention in CLAUDE.md, one level up):
+%   cd Paper && TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode paper.tex
+%   BIBINPUTS=..:$BIBINPUTS bibtex paper
+%   TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode paper.tex
+%   TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode paper.tex
+% =============================================================================
+\documentclass[12pt]{article}
+\input{paper-header}
+
+\title{[TITLE]\thanks{We thank [names] for helpful comments. [RA name(s)] provided
+  research assistance. [Funding acknowledgment, if any.]}}
+\authorgrid{%
+  \shortstack{[Author One] \\ \small [Affiliation One]} &
+  \shortstack{[Author Two] \\ \small [Affiliation Two]}
+}
+\date{[DATE]}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+[One paragraph: the question, the approach in one sentence, the headline finding with its
+direction and magnitude, and what the finding implies. Not "we find X is significant" —
+state what X being what it is means for the reader's prior.]
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+% Optional opening frame — a motivating fact, tension, or epigraph. Delete the
+% \epigraph line entirely if it doesn't earn its place (paper-writing-craft.md §2).
+\epigraph{[A short quotation that frames the question, if one genuinely helps.]}{---[Attribution]}
+
+[Opening paragraph: the gap in what existing measurement/approach captures.]
+
+[Second paragraph: what this paper does differently, in plain language before notation.]
+
+\paragraph{Contribution.} [First-person, explicit statement of what is new. Not "we
+contribute to the literature on X" — name the contribution: what specifically did not exist
+before this paper that exists now?]
+
+\paragraph{Roadmap.} Section~\ref{sec:framework} [does what]. Section~\ref{sec:data}
+[describes what]. Section~\ref{sec:results} [answers what]. Section~\ref{sec:discussion}
+[addresses what]. Section~\ref{sec:conclusion} concludes.
+
+% Literature engagement: build this list with /lit-review before drafting, and verify every
+% citation with /verify-claims before calling the draft done. Each strand needs (1) the named
+% paper/approach, (2) what it finds, (3) how this paper differs — see paper-writing-craft.md §1.
+[Literature paragraph(s) — multiple named strands, not one, each contrasted against this
+paper's approach. Example citation: \citep{example2024}.]
+
+\section{[Conceptual Framework / Measurement Approach]}
+\label{sec:framework}
+
+[Prose explanation of why the approach measures what it claims to measure, before any
+estimation mechanics. If an abstract quantity is hard to grasp on first read, include a
+worked numerical example here — two or three concrete illustrative cases — showing the
+quantity behaving as claimed. See paper-writing-craft.md §2.3 for when this device earns its
+place.]
+
+\section{Data}
+\label{sec:data}
+
+[Source, sample construction, every restriction with the observation count it costs. A
+reader should be able to reconstruct the analysis sample from this section alone.]
+
+\begin{table}[htbp]
+  \centering
+  \caption{[Summary statistics]}
+  \label{tab:summary}
+  \input{_outputs/tab_summary}  % \input, never hand-transcribed — see stata/r conventions
+\end{table}
+
+\section{Results}
+\label{sec:results}
+
+[Answers the specific question the roadmap paragraph promised for this section.]
+
+\begin{table}[htbp]
+  \centering
+  \caption{[Main results]}
+  \label{tab:main}
+  \input{_outputs/tab_main}
+\end{table}
+
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+[What the evidence does not show; what would overturn the headline claim. Exposition of
+existing findings — not a request for new diagnostics.]
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+[Restates the contribution and its scope. No new claims.]
+
+\bibliography{../Bibliography_base}
+
+\end{document}

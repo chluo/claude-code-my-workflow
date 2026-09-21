@@ -30,7 +30,7 @@ set seed 12345                    // pin RNG seed for any random ops
 set sortseed 12345                // pin sort stability across versions
 cap log close
 cap log close _all                // belt-and-suspenders
-log using "scripts/stata/_outputs/NN_log.smcl", replace
+log using "scripts/stata/_log/NN_log.smcl", replace
 ```
 
 Why each line:
@@ -66,22 +66,31 @@ scripts/stata/
 
 The 99-script is the **one-command reproduction**: `do scripts/stata/99_run_all.do` from the repo root produces every output the paper cites. AEA Data Editor checks this exact shape.
 
-## 3. Outputs convention
+## 3. Outputs convention — three buckets, not one
 
-All outputs land in `scripts/stata/_outputs/`:
+Split by what a reader needs vs. what is disposable:
 
 ```
-scripts/stata/_outputs/
-├── 01_log.smcl                 # captured stdout per script
-├── clean_panel.dta             # cleaned data
-├── descriptives.csv            # summary stats
+scripts/stata/_outputs/         # FINAL, citable — the paper \input{}s these. Not gitignored:
+├── descriptives.csv            # the manuscript's compilation depends on them.
 ├── main_results.tex            # esttab → .tex for direct \input{} in paper
 ├── balance_table.tex
 ├── fig_eventstudy.pdf          # graph export, vector
 └── sessionInfo.txt             # capture stata version + installed pkg versions
+
+scripts/stata/_log/             # build logs — regenerable every run. Gitignored.
+└── 01_log.smcl                 # captured stdout per script
+
+scripts/stata/_temp/            # low-importance intermediates a later script consumes but the
+└── clean_panel_stage1.dta      # paper never cites directly. Gitignored.
 ```
 
-`sessionInfo.txt` is mandatory. Generate via:
+**The test for which bucket a file belongs in:** if the manuscript `\input{}`s it or cites its
+value directly, it's `_outputs/`. If it's a captured log, it's `_log/`. If it's scratch a
+downstream script reads but nothing in the paper points at, it's `_temp/`.
+
+`sessionInfo.txt` is mandatory and lives in `_outputs/` (a referee needs it; it is not
+disposable like a run log). Generate via:
 
 ```stata
 * At end of 00_install.do (or via a dedicated sessioninfo subroutine):
@@ -174,6 +183,7 @@ The [AEA Data Editor checklist](https://aeadataeditor.github.io/) requires:
 
 ## Cross-references
 
+- [`paper-writing-craft.md`](paper-writing-craft.md) — the `\input{}`-only discipline for manuscript tables this rule's `_outputs/` bucket exists to support.
 - [`r-code-conventions.md`](r-code-conventions.md) — analogous discipline for R-first pipelines.
 - [`replication-protocol.md`](replication-protocol.md) — tolerance contract that applies across R / Stata / Python.
 - [`../references/release-engineering.md`](../references/release-engineering.md) — shipping an `.ado` package or a replication package as a versioned artifact: message and silent-resolution censuses, preflight archives, generated status contracts, downstream pinning.

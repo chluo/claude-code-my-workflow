@@ -195,7 +195,7 @@ claims were true, v2.5.1 asks whether the things that check them still work.
   left pinned to the old SHA is an honest, inspectable state; one pointed at a moving reference
   silently inherits a number nobody re-verified.
 
-**Inventory at release: 60 skills, 18 agents, 37 rules, 8 hooks, 10 gates**
+**Inventory at release: 61 skills, 18 agents, 38 rules, 8 hooks, 10 gates**
 (was 60 / 18 / 36 / 7 / 8 at v2.5.0).
 
 ### Removed — the methods veto, extended
