@@ -20,10 +20,10 @@ already-written manuscript; this one writes the manuscript and packages it.
 ## Continuity — read this before Phase 0
 
 **This is one uninterrupted task from Pre-Flight to Final Report.** There are exactly two valid
-places to end a turn: the `AskUserQuestion` in Phase 0 when a RUN_CONFIG field is genuinely
-unresolvable, and the Final Report at the very end of Phase 3. Everything in between —
-including running the underlying data analysis, and every step of Phase 2 — is a means to this
-skill's end, never itself a stopping point.
+places to end a turn: the `AskUserQuestion` escalations described below, and the Final Report at
+the very end of Phase 4 — which itself must end with the permission check described immediately
+below. Everything in between — including running the underlying data analysis, and every step of
+Phase 2 through Phase 4 — is a means to this skill's end, never itself a stopping point.
 
 **Run every sub-step in this skill inline, in your own context — never as a background hand-off
 you wait on separately.** If Phase 1 needs `/data-analysis` or `/stata-replication` and no
@@ -62,6 +62,33 @@ session."* If granted, resolve every subsequent genuinely-ambiguous field yourse
 of this conversation (pick the most defensible option), disclosing the assumption in the
 Pre-Flight Report or the Judgment calls list rather than asking again. This waiver is separate
 from the design-decision one above — granting one does not grant the other.
+
+## Exit checkpoint — never end this skill's turn without asking first
+
+**This is the backstop for everything above, added because the failure mode above was observed
+in practice: a run stopped silently after Phase 1's data analysis, with no manuscript ever
+drafted, and required a fresh invocation to notice and finish.** The instruction "keep going, do
+not stop" is necessary but is exactly the instruction that failed once already — so it is not
+sufficient on its own. This rule is the guarantee layered on top of it:
+
+**You may never end this skill's turn — for any reason — without an explicit permission check.**
+This applies uniformly: to the legitimate completion after Phase 4, to any escalation elsewhere
+in this skill, and to any other point where you find yourself about to stop. Before ending the
+turn, always:
+
+1. State exactly what is done and what is not, against the phase list (Pre-Flight; Phase 1
+   steps 1–4; each Phase 2 sub-step, converged or not; Phase 3 compile; Phase 4 package).
+2. If anything on that list is incomplete and there is no genuine blocker forcing a stop, **do
+   not stop** — the honest self-audit itself is what prevents a silent premature exit; go back
+   and finish it instead of asking permission to abandon it.
+3. Only once the audit confirms the list is genuinely complete (or a genuine blocker was already
+   escalated per the rules above), end the turn by asking — via `AskUserQuestion` — whether to
+   consider the run finished, rather than declaring it finished unilaterally.
+
+A silent stop is indistinguishable, from the user's side, between "finished" and "broken." This
+rule makes that distinction visible in the same turn — a user who sees the permission check fire
+after only Phase 1 immediately knows something is wrong and can say "continue," recovering
+without a fresh invocation — instead of the ambiguous silence that caused the original failure.
 
 ## LaTeX toolchain — install automatically if missing, never ask
 
@@ -263,6 +290,9 @@ State, in this order:
 6. **Replication package** (Phase 4) — its location, the DCAS checklist summary, and any open
    `[FILL]` items left for the author (license choice, deposit target, restricted-data access
    note if that was escalated rather than resolved autonomously).
+7. **The exit checkpoint's permission check** (see above) — end the report by asking whether to
+   consider the run finished, per the self-audit against the phase list. Do not end the report
+   with a bare statement of completion; end it with that question.
 
 ## What this skill does not do
 
