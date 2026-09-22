@@ -16,6 +16,23 @@ the user to touch afterward is author/institution names and any journal-specific
 Pre-Flight didn't already resolve. This is the skill that was missing: existing skills review or
 QA an already-written manuscript; this one writes the manuscript.
 
+## Continuity — read this before Phase 0
+
+**This is one uninterrupted task from Pre-Flight to Final Report.** There are exactly two valid
+places to end a turn: the `AskUserQuestion` in Phase 0 when a RUN_CONFIG field is genuinely
+unresolvable, and the Final Report at the very end of Phase 3. Everything in between —
+including running the underlying data analysis, and every step of Phase 2 — is a means to this
+skill's end, never itself a stopping point.
+
+**Run every sub-step in this skill inline, in your own context — never as a background hand-off
+you wait on separately.** If Phase 1 needs `/data-analysis` or `/stata-replication` and no
+analysis exists yet, that pipeline is not a hand-off you delegate and end your turn on: follow
+its instructions yourself, in the current context, then continue immediately to the next step of
+*this* skill. A sub-pipeline finishing and producing its own natural-sounding "here are your
+results" conclusion is not this skill's conclusion — if the manuscript hasn't been drafted,
+reviewed, verified, and compiled yet, the task is not done, regardless of how much work the last
+step did.
+
 ## Phase 0: Pre-Flight (RUN_CONFIG — collect everything before drafting starts)
 
 Per [`orchestration-schemas.md` §5](../../references/orchestration-schemas.md), gather every
@@ -37,26 +54,30 @@ never mid-draft. Echo the resolved RUN_CONFIG back as a Pre-Flight Report before
 
 ## Phase 1: Draft
 
-1. Copy [`templates/paper/paper-template.tex`](../../../templates/paper/paper-template.tex) and
+1. **Ensure the analysis outputs exist — this is a precondition, not a deliverable.** Check
+   `outputs_path` from Pre-Flight. If it's empty or missing, run
+   [`/data-analysis`](../data-analysis/SKILL.md) or [`/stata-replication`](../stata-replication/SKILL.md)
+   yourself, inline, now (Stata logs/intermediates go to `scripts/stata/_log/` / `_temp/` per
+   [`stata-code-conventions.md`](../../rules/stata-code-conventions.md); the paper only ever
+   `\input{}`s `_outputs/`). **The moment that pipeline finishes, continue immediately to step 2
+   below in the same turn — do not stop, summarize, or hand back to the user here.** No number in
+   any table/figure is ever hand-transcribed; every one comes from `\input{}`-ing `outputs_path`.
+2. Copy [`templates/paper/paper-template.tex`](../../../templates/paper/paper-template.tex) and
    [`Preambles/paper-header.tex`](../../../Preambles/paper-header.tex) into place (`Paper/` by
    default, or wherever the Pre-Flight named).
-2. Apply [`paper-writing-craft.md`](../../rules/paper-writing-craft.md) in full: literature
+3. Apply [`paper-writing-craft.md`](../../rules/paper-writing-craft.md) in full: literature
    density via the strand-by-strand test in §1 (run [`/lit-review`](../lit-review/SKILL.md) first
    if the literature list doesn't already exist), the structural checklist in §2, the register
-   discipline in §3.
-3. Every number in every table/figure comes from `\input{}`-ing `outputs_path` — never
-   hand-transcribed. If the analysis hasn't been run yet, run it first via
-   [`/data-analysis`](../data-analysis/SKILL.md) or [`/stata-replication`](../stata-replication/SKILL.md)
-   (Stata logs/intermediates go to `scripts/stata/_log/` / `_temp/` per
-   [`stata-code-conventions.md`](../../rules/stata-code-conventions.md); the paper only ever
-   `\input{}`s `_outputs/`).
+   discipline in §3. This is the actual manuscript prose — the deliverable step 1 was in service
+   of.
 4. Compile (3-pass XeLaTeX + bibtex, mirroring `CLAUDE.md`'s existing LaTeX command block) and
    confirm a PDF is produced before moving to Phase 2 — a draft that doesn't compile isn't a
-   draft.
+   draft. Continue straight into Phase 2; a compiling PDF is progress, not completion.
 
 ## Phase 2: Auto-finalize (no user prompt between any of these steps)
 
-Runs the existing critic-fixer and CoVe patterns from
+A compiling draft from Phase 1 is not the deliverable — proceed into this phase automatically,
+in the same turn, with no report back to the user in between. Runs the existing critic-fixer and CoVe patterns from
 [`orchestrator-protocol.md`](../../rules/orchestrator-protocol.md) — this skill composes them,
 it does not reimplement verification. Loop-until-dry applies across the whole sequence: two
 consecutive rounds adding zero new CRITICAL/MAJOR findings (by the deterministic
