@@ -199,9 +199,10 @@ State, in this order:
    entirely if no waiver was granted and every genuinely ambiguous point escalated normally.
 3. **The AI-voice punch-list** (if `/humanize` found anything non-mechanical) — the only items
    left requiring the user's own editorial judgment, per `writing-with-ai.md`.
-4. **Remaining placeholders** — author names, institution, and anything the Pre-Flight left as
-   "general working paper" that a named target journal would instead fix (margins, citation
-   style, length limits).
+4. **Remaining placeholders** — author names, institution, the acknowledgment footnote if there
+   was no genuine content for it (never filled with a "working draft" disclaimer instead — see
+   `paper-writing-craft.md` §4), and anything the Pre-Flight left as "general working paper"
+   that a named target journal would instead fix (margins, citation style, length limits).
 5. Confirmation the PDF compiles cleanly as of this report.
 
 ## What this skill does not do

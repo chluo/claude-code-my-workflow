@@ -96,9 +96,12 @@ Grep/read the `.tex` source and — where you can view it — the rendered PDF:
 - Multi-author paper using a single flush-left author line instead of a real grid — **MINOR**.
 - Tables using hand-drawn `\hline` instead of `booktabs` (`\toprule`/`\midrule`/`\bottomrule`) —
   **MINOR**.
-- A stray placeholder footnote surviving into a draft presented as finished ("Working title and
-  working draft" language) — **MAJOR** if the caller declared this a finalize/publication-ready
-  pass; note only, not a finding, if the caller declared it a work-in-progress draft.
+- A "working draft" disclaimer manufactured into the acknowledgment footnote — "Working title,"
+  "Comments welcome," "All errors are our own," or equivalents, in any combination. Flag
+  **MAJOR** unconditionally when invoked by `/draft-paper` (that skill always reports its output
+  as publication-ready, never as work-in-progress, so this pattern is never appropriate there).
+  An empty or bracketed-placeholder acknowledgment footnote is fine and is not this finding — the
+  defect is specifically the *manufactured disclaimer text*, not the absence of real content.
 
 ## Report format
 

@@ -115,9 +115,15 @@ tells of an unpolished LaTeX default:
   and [`r-code-conventions.md`](r-code-conventions.md)).
 - **`natbib`-style citations** with a real bibliography style, not raw `\cite{}` rendered as a
   bracketed number with no author-year context in text.
-- **No stray placeholder footnotes** in a draft presented as finished ("Working title and
-  working draft. Comments welcome." is fine mid-project; it must not survive into a draft the
-  auto-finalize pipeline reports as done).
+- **Never write a "working draft" disclaimer, in any wording** — "Working title and working
+  draft," "Comments welcome," "All errors are our own," and equivalents are genre-standard on a
+  paper an author is actively circulating for feedback, but a skill that reports its own output
+  as publication-ready must not manufacture that disclaimer itself; it is not a placeholder to
+  invent, it is a statement about the author's own relationship to the draft. If there is no
+  genuine acknowledgment content to put in the `\thanks{}` footnote (no real names, no real
+  funding source), leave it as an explicit bracketed placeholder — `[Acknowledgments — fill in
+  before circulating]` — the same way author names stay placeholders, never substitute
+  boilerplate disclaimer text to make the footnote look filled-in.
 
 ## 5. Where this rule stops
 
