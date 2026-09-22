@@ -53,7 +53,7 @@ Always also record the interpreter version (`python --version`) in the report.
 
 **Stata** — Stata has no lockfile, so capture the closest equivalents (mirrors [`stata-code-conventions.md`](../../rules/stata-code-conventions.md) §3):
 - The pinned `version` line each `.do` file declares (e.g. `version 18`) — grep `scripts/stata/*.do` and report the version actually pinned.
-- An ado/plus package inventory: a small `.do` that runs `which` on the user-installed commands the pipeline uses (`reghdfe`, `ivreg2`, `estout`/`esttab`, `rdrobust`, `csdid`, …) plus `ado dir` and `about`, logged to `scripts/stata/_outputs/sessionInfo.txt`.
+- An ado/plus package inventory: a small `.do` that runs `which` on the user-installed commands the pipeline uses (`reghdfe`, `ivreg2`, `estout`/`esttab`, `rdrobust`, `csdid`, …) plus `ado dir` and `about`, logged to `scripts/stata/_output/sessionInfo.txt`.
 - A note that Stata version pinning is *semantic* (`version 18` fixes command behavior), not a binary pin — the Dockerfile (Phase 2) cannot help here because Stata is licensed and not redistributable; record the exact Stata version + flavor (SE/MP/IC) + update level in the report so a replicator can match it.
 
 ### Phase 1b: Record seeds and RNG
@@ -106,7 +106,7 @@ Pre-fill software/package/seed lines from the captured artifacts; leave runtime 
 |---|---|
 | R | `renv.lock`, `scripts/R/_outputs/sessionInfo.txt` |
 | Python | `requirements.txt` *or* `environment.yml` *or* `uv.lock` (matching project tooling) |
-| Stata | `scripts/stata/_outputs/sessionInfo.txt` (version + ado list) |
+| Stata | `scripts/stata/_output/sessionInfo.txt` (version + ado list) |
 | Any (`--docker`) | `Dockerfile` |
 | Always | `scripts/<lang>/_outputs/computational_requirements.md` (the paste-ready block) |
 

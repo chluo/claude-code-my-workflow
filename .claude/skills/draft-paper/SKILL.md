@@ -104,8 +104,8 @@ interactive choice now, since nothing downstream can pause to ask:
 run_config:
   title_or_rq: [research question / working title]
   authors: [placeholder names — real names filled in by the user afterward]
-  analysis_tool: R | Stata | Python           # where do _outputs/ tables/figures live
-  outputs_path: scripts/R/_outputs/ | scripts/stata/_outputs/ | ...
+  analysis_tool: R | Stata | Python           # where do the final tables/figures live
+  outputs_path: scripts/R/_outputs/ | scripts/stata/_output/ | ...   # naming differs by language — see each language's own convention
   target_journal: [name, or "general working paper" if none]
   disclosure_policy: [from target_journal, or generic if none named]
   max_rounds: 5                                # loop-until-dry fallback cap, per orchestrator-protocol
@@ -124,7 +124,7 @@ Report before Phase 1.
    [`/data-analysis`](../data-analysis/SKILL.md) or [`/stata-replication`](../stata-replication/SKILL.md)
    yourself, inline, now (Stata logs/intermediates go to `scripts/stata/_log/` / `_temp/` per
    [`stata-code-conventions.md`](../../rules/stata-code-conventions.md); the paper only ever
-   `\input{}`s `_outputs/`). **The moment that pipeline finishes, continue immediately to step 2
+   `\input{}`s `outputs_path`, never a log or intermediate file). **The moment that pipeline finishes, continue immediately to step 2
    below in the same turn — do not stop, summarize, or hand back to the user here.** No number in
    any table/figure is ever hand-transcribed; every one comes from `\input{}`-ing `outputs_path`.
 

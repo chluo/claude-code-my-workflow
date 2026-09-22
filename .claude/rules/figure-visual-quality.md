@@ -4,6 +4,8 @@ paths:
   - "scripts/R/**/*.R"
   - "**/_outputs/*.png"
   - "**/_outputs/*.pdf"
+  - "**/_output/*.png"
+  - "**/_output/*.pdf"
 ---
 
 # Figure Visual Quality (Stata / R statistical graphics)

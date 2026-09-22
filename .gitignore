@@ -83,7 +83,7 @@ quality_reports/diagnoses/*
 scripts/R/_outputs/
 
 # Stata build logs and low-importance intermediates — regenerable, never cited
-# directly by the manuscript. scripts/stata/_outputs/ is deliberately NOT
+# directly by the manuscript. scripts/stata/_output/ is deliberately NOT
 # ignored: the paper \input{}s those files directly (stata-code-conventions.md §3).
 scripts/stata/_log/
 scripts/stata/_temp/

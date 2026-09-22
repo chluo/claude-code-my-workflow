@@ -33,7 +33,8 @@ first if there are many figures.
 ### Pass 2 — open every figure, in full (the actual check)
 
 For each figure destined for the manuscript (found via `\includegraphics`/`\input` references in
-the `.tex`, or all `_outputs/*.png`/`_outputs/*.pdf` if no manuscript is given), **use the Read
+the `.tex`, or all `_outputs/*.png`/`_outputs/*.pdf` (R) / `_output/*.png`/`_output/*.pdf` (Stata)
+if no manuscript is given), **use the Read
 tool to open the rendered file and look at it.** Do this for every figure, not only the
 HIGH-risk ones from Pass 1 — a figure with no combine/facet call can still have a long axis label
 collide with a tick mark, or a legend sitting on top of a data series.
@@ -71,7 +72,7 @@ re-renders.
 
 | # | Figure | Generating script | Issue | Severity | Fix pattern |
 |---|---|---|---|---|---|
-| 1 | `_outputs/fig_sector_trends.png` | `scripts/stata/05_figures.do:42` | Small-multiple panel titles overlap — each panel repeats the full title at full-graph font size | MAJOR | Suppress per-panel `title()`, set one title on `graph combine`, add `iscale()` |
+| 1 | `_output/fig_sector_trends.png` | `scripts/stata/05_figures.do:42` | Small-multiple panel titles overlap — each panel repeats the full title at full-graph font size | MAJOR | Suppress per-panel `title()`, set one title on `graph combine`, add `iscale()` |
 
 ## Clean
 

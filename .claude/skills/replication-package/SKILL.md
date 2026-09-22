@@ -22,7 +22,7 @@ Produce the deposit an economist hands a journal at acceptance: a directory tree
 ## Inputs
 
 - `$0` — path to the manuscript (`.tex`, `.qmd`, `.md`, `.pdf`). Required (the source of the Table/Figure inventory).
-- `$1` — outputs directory. Defaults to `scripts/R/_outputs/`. Recognised alternatives: `scripts/stata/_outputs/`, `scripts/python/_outputs/`, `_targets/objects/`.
+- `$1` — outputs directory. Defaults to `scripts/R/_outputs/`. Recognised alternatives: `scripts/stata/_output/`, `scripts/python/_outputs/`, `_targets/objects/`.
 
 ## Workflow
 

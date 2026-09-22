@@ -22,7 +22,7 @@ Scan analysis outputs built on **restricted or confidential data** (Census FSRDC
 
 ## Inputs
 
-- `$0` — outputs directory to scan. Defaults to `scripts/R/_outputs/`. Recognised siblings: `scripts/stata/_outputs/`, `scripts/python/_outputs/`, or any export-staging directory (e.g., a `to_review/` folder the analyst stages for the RDC).
+- `$0` — outputs directory to scan. Defaults to `scripts/R/_outputs/`. Recognised siblings: `scripts/stata/_output/`, `scripts/python/_outputs/`, or any export-staging directory (e.g., a `to_review/` folder the analyst stages for the RDC).
 - `--provider` — selects which disclosure-rule profile to load (Phase 0). One of `census` / `irs` / `irb` / `generic`. **Providers differ** — thresholds and rules are not interchangeable; default `generic` is deliberately conservative.
 - `--threshold N` — override the minimum cell count (default `n<10`). Census FSRDC commonly uses 10 for establishments; IRS and many IRBs differ. Always reconcile with your provider's *written* rules.
 

@@ -71,7 +71,7 @@ The 99-script is the **one-command reproduction**: `do scripts/stata/99_run_all.
 Split by what a reader needs vs. what is disposable:
 
 ```
-scripts/stata/_outputs/         # FINAL, citable — the paper \input{}s these. Not gitignored:
+scripts/stata/_output/         # FINAL, citable — the paper \input{}s these. Not gitignored:
 ├── descriptives.csv            # the manuscript's compilation depends on them.
 ├── main_results.tex            # esttab → .tex for direct \input{} in paper
 ├── balance_table.tex
@@ -86,15 +86,15 @@ scripts/stata/_temp/            # low-importance intermediates a later script co
 ```
 
 **The test for which bucket a file belongs in:** if the manuscript `\input{}`s it or cites its
-value directly, it's `_outputs/`. If it's a captured log, it's `_log/`. If it's scratch a
+value directly, it's `_output/`. If it's a captured log, it's `_log/`. If it's scratch a
 downstream script reads but nothing in the paper points at, it's `_temp/`.
 
-`sessionInfo.txt` is mandatory and lives in `_outputs/` (a referee needs it; it is not
+`sessionInfo.txt` is mandatory and lives in `_output/` (a referee needs it; it is not
 disposable like a run log). Generate via:
 
 ```stata
 * At end of 00_install.do (or via a dedicated sessioninfo subroutine):
-log using "scripts/stata/_outputs/sessionInfo.txt", text replace
+log using "scripts/stata/_output/sessionInfo.txt", text replace
 which estout
 which reghdfe
 which ivreg2
@@ -114,7 +114,7 @@ eststo m1
 quietly: reghdfe y x1 x2 controls, absorb(unit time) cluster(unit)
 eststo m2
 
-esttab m1 m2 using "scripts/stata/_outputs/tab_main.tex", replace ///
+esttab m1 m2 using "scripts/stata/_output/tab_main.tex", replace ///
     booktabs label                              /// use the variable labels you set
     se(2) b(3)                                  /// SE in parens, 3-decimal coeffs
     star(* 0.10 ** 0.05 *** 0.01)              /// significance convention
@@ -122,7 +122,7 @@ esttab m1 m2 using "scripts/stata/_outputs/tab_main.tex", replace ///
     nonotes addnote("Robust SEs clustered at unit level.")
 ```
 
-Then in the manuscript: `\input{scripts/stata/_outputs/tab_main.tex}` — table values update mechanically every time the .do file runs.
+Then in the manuscript: `\input{scripts/stata/_output/tab_main.tex}` — table values update mechanically every time the .do file runs.
 
 ## 5. Significance-stars convention
 
@@ -147,8 +147,8 @@ For every RCT or quasi-experimental design:
 ## 8. Figures (graph export)
 
 ```stata
-graph export "scripts/stata/_outputs/fig_eventstudy.pdf", replace as(pdf)
-graph export "scripts/stata/_outputs/fig_eventstudy.png", replace as(png) width(2000)
+graph export "scripts/stata/_output/fig_eventstudy.pdf", replace as(pdf)
+graph export "scripts/stata/_output/fig_eventstudy.png", replace as(png) width(2000)
 ```
 
 Both vector (PDF for the paper) and raster (PNG for slides). Don't rely on the auto-generated `.gph` — it's not portable across Stata versions.
@@ -189,7 +189,7 @@ The [AEA Data Editor checklist](https://aeadataeditor.github.io/) requires:
 
 ## Cross-references
 
-- [`paper-writing-craft.md`](paper-writing-craft.md) — the `\input{}`-only discipline for manuscript tables this rule's `_outputs/` bucket exists to support.
+- [`paper-writing-craft.md`](paper-writing-craft.md) — the `\input{}`-only discipline for manuscript tables this rule's `_output/` bucket exists to support.
 - [`figure-visual-quality.md`](figure-visual-quality.md) — prevention + mandatory visual check for `graph combine`/small-multiple text overlap.
 - [`r-code-conventions.md`](r-code-conventions.md) — analogous discipline for R-first pipelines.
 - [`replication-protocol.md`](replication-protocol.md) — tolerance contract that applies across R / Stata / Python.

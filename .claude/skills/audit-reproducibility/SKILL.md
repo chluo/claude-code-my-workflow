@@ -25,7 +25,7 @@ Compare numeric claims in a manuscript (point estimates, standard errors, p-valu
 ## Inputs
 
 - `$0` — path to the manuscript (`.tex`, `.qmd`, `.md`, `.pdf`). Required.
-- `$1` — path to the outputs directory. Defaults to `scripts/R/_outputs/`. Recognised alternatives: `scripts/stata/_outputs/` (Stata pipelines built by [`/stata-replication`](../stata-replication/SKILL.md)), `_targets/objects/` (R `targets` workflows), any directory the user-specified outputs live in.
+- `$1` — path to the outputs directory. Defaults to `scripts/R/_outputs/`. Recognised alternatives: `scripts/stata/_output/` (Stata pipelines built by [`/stata-replication`](../stata-replication/SKILL.md)), `_targets/objects/` (R `targets` workflows), any directory the user-specified outputs live in.
 
 ## Workflow
 
@@ -248,13 +248,13 @@ The skill compares manuscript claims against outputs in three source-language ec
 | Source | Default outputs dir | Read-output via | Common claim sources |
 |---|---|---|---|
 | **R** (default) | `scripts/R/_outputs/` | `readRDS()`, `arrow::read_parquet()`, `vroom::vroom()` | `.rds` / `.parquet` / `.csv` / `tinytable` `.tex` |
-| **Stata** (v1.9.0) | `scripts/stata/_outputs/` | `haven::read_dta()` from R, or `pyreadstat.read_dta()` from Python | `.dta` / `esttab` `.tex` / `.smcl` log values |
+| **Stata** (v1.9.0) | `scripts/stata/_output/` | `haven::read_dta()` from R, or `pyreadstat.read_dta()` from Python | `.dta` / `esttab` `.tex` / `.smcl` log values |
 | **Python** | `scripts/python/_outputs/` (or `_targets/`) | `pandas.read_parquet`, `pickle.load` | `.parquet` / `.pickle` / `.csv` |
 
 **Stata-specific notes (v1.9.0):**
 
 - `.dta` outputs are read via `haven::read_dta()` (R), `pyreadstat.read_dta()` (Python), or by parsing the corresponding `esttab` `.tex` if the table-cell value is what the manuscript cites.
-- Manuscript cell `\input{scripts/stata/_outputs/tab_main.tex}` is the strongest provenance signal — the cell value comes mechanically from the .do file. Match the location in the `.tex` to the regression call in `03_analyze.do`.
+- Manuscript cell `\input{scripts/stata/_output/tab_main.tex}` is the strongest provenance signal — the cell value comes mechanically from the .do file. Match the location in the `.tex` to the regression call in `03_analyze.do`.
 - Clustering df adjustments can differ between `reghdfe` and base `reg, cluster()`. If a SE mismatches at the 2nd decimal, the tolerance in `replication-protocol.md` covers it; if it mismatches at the 1st decimal, investigate the df adjustment.
 
 ## Passport-mode (v1.9.0)

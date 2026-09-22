@@ -1,6 +1,6 @@
 ---
 name: stata-replication
-description: End-to-end Stata replication pipeline — scaffolds numbered `.do` files in `scripts/stata/`, executes them via the `stata-mcp` MCP server, captures logs and outputs to `scripts/stata/_outputs/`, and produces publication-ready tables (esttab) and figures (graph export). Mirrors `/data-analysis` for R-first projects. Use when user says "stata replication", "set up Stata pipeline", "scaffold the .do files", "run Stata analysis", "AEA replication package in Stata", or when a project's analysis language is Stata not R.
+description: End-to-end Stata replication pipeline — scaffolds numbered `.do` files in `scripts/stata/`, executes them via the `stata-mcp` MCP server, captures logs and outputs to `scripts/stata/_output/`, and produces publication-ready tables (esttab) and figures (graph export). Mirrors `/data-analysis` for R-first projects. Use when user says "stata replication", "set up Stata pipeline", "scaffold the .do files", "run Stata analysis", "AEA replication package in Stata", or when a project's analysis language is Stata not R.
 argument-hint: "[paper-or-data-pointer] [--from-r] [--no-execute]"
 disable-model-invocation: true
 allowed-tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Agent", "Task"]
@@ -11,7 +11,7 @@ metadata:
 
 # `/stata-replication` — Stata pipeline scaffold + execution
 
-Build a complete Stata replication pipeline in `scripts/stata/`: numbered `.do` files following [`.claude/rules/stata-code-conventions.md`](../../rules/stata-code-conventions.md), executed via the [`stata-mcp`](https://github.com/SepineTam/stata-mcp) MCP server, with outputs landing in `scripts/stata/_outputs/`.
+Build a complete Stata replication pipeline in `scripts/stata/`: numbered `.do` files following [`.claude/rules/stata-code-conventions.md`](../../rules/stata-code-conventions.md), executed via the [`stata-mcp`](https://github.com/SepineTam/stata-mcp) MCP server, with outputs landing in `scripts/stata/_output/`.
 
 ## When to use
 
@@ -67,17 +67,26 @@ If the paper or data source suggests specific specs (e.g., DiD with `reghdfe`, I
 
 ### Phase 2: Execute (unless `--no-execute`)
 
+**Before a rerun, clear `scripts/stata/_output/`, `_log/`, and `_temp/` yourself — no permission
+needed.** All three are fully regenerable by rerunning the pipeline (`_output/` is the one
+bucket not gitignored, but it is still just as reproducible as the other two — see
+[`stata-code-conventions.md`](../../rules/stata-code-conventions.md) §3). A stale file from a
+prior run that the current scripts no longer produce (a renamed table, a dropped figure) is
+worse left in place than deleted: it silently looks current. Deleting and letting the rerun
+repopulate everything is the same class of action as the "no permission pause between composed
+sub-steps" policy `/draft-paper` already applies when it invokes this skill — clear, don't ask.
+
 For each script in numbered order:
 
 1. Dispatch to `stata-mcp` to execute the `.do` file.
-2. Capture the log (Stata writes to `scripts/stata/_log/NN_log.smcl` per the header convention) and the resulting `.dta` / `.tex` / `.pdf` outputs in `scripts/stata/_outputs/`.
+2. Capture the log (Stata writes to `scripts/stata/_log/NN_log.smcl` per the header convention) and the resulting `.dta` / `.tex` / `.pdf` outputs in `scripts/stata/_output/`.
 3. If a script fails, halt — do NOT auto-fix unless the failure is trivial (typo flagged by Stata at parse time). For substantive failures (insufficient observations, singular matrices, missing covariates), surface to the user.
 
 For long-running scripts (> 2 minutes), use the **Monitor tool** to stream stdout — same pattern documented in `/data-analysis` and `/audit-reproducibility`.
 
 ### Phase 3: Verify
 
-1. Confirm every expected output exists in `scripts/stata/_outputs/`.
+1. Confirm every expected output exists in `scripts/stata/_output/`.
 2. Check `sessionInfo.txt` was captured (package versions).
 3. For any `graph combine` or by-group/small-multiple figure, open the rendered `.png` and check
    for overlapping or illegible text before reporting it done — a `graph export` exit code alone
