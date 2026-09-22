@@ -14,6 +14,10 @@ Produce the deposit an economist hands a journal at acceptance: a directory tree
 
 ## When to use
 
+- **Automatically, as Phase 4 of [`/draft-paper`](../draft-paper/SKILL.md).** That skill invokes
+  this one inline after the manuscript is finalized (Phase 3), applying fixes on an
+  audit-reproducibility FAIL the same way it fixes any other Phase 2 finding, and escalating
+  only the genuine data-provenance judgment call (Phase 5's restricted-data note).
 - **At acceptance.** The journal's data editor (AEA, REStud, JPE, EJ, ...) requests a DCAS-compliant deposit before the paper is typeset.
 - **Before an openICPSR / Zenodo / Dataverse upload.** Build the tree and README once, locally, before the web upload.
 - **Pre-submission dry run.** Catch the "I never wrote down where Table 3 comes from" gap while it is cheap to fix.

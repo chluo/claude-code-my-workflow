@@ -1,6 +1,6 @@
 ---
 name: draft-paper
-description: Draft a full empirical-economics manuscript from a research question and existing analysis outputs, then automatically run the complete QA/finalize pipeline (adversarial review, claim verification, proofreading, bibliography validation, disclosures) with no further prompting. Use when user says "draft the paper", "write up these results as a paper", "turn this analysis into a manuscript", "produce a publication-ready draft". NOT for reviewing an existing manuscript (use `/review-paper`) or running the underlying analysis (use `/data-analysis` or `/stata-replication` first).
+description: Draft a full empirical-economics manuscript from a research question and existing analysis outputs, then automatically run the complete QA/finalize pipeline (adversarial review, claim verification, proofreading, bibliography validation, disclosures) and assemble a DCAS-compliant replication package, with no further prompting. Use when user says "draft the paper", "write up these results as a paper", "turn this analysis into a manuscript", "produce a publication-ready draft". NOT for reviewing an existing manuscript (use `/review-paper`) or running the underlying analysis (use `/data-analysis` or `/stata-replication` first).
 argument-hint: "[research question or title]"
 allowed-tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash", "Agent", "Task", "AskUserQuestion"]
 context: fork
@@ -10,11 +10,12 @@ effort: high
 
 # Draft Paper (draft → automatic finalize)
 
-Produces a full manuscript draft and then finalizes it end to end — the loop described in
-[`orchestrator-protocol.md`](../../rules/orchestrator-protocol.md) — so the only thing left for
-the user to touch afterward is author/institution names and any journal-specific choice the
-Pre-Flight didn't already resolve. This is the skill that was missing: existing skills review or
-QA an already-written manuscript; this one writes the manuscript.
+Produces a full manuscript draft, finalizes it end to end — the loop described in
+[`orchestrator-protocol.md`](../../rules/orchestrator-protocol.md) — and assembles its
+replication package, so the only thing left for the user to touch afterward is
+author/institution names and any journal-specific or deposit choice the Pre-Flight and Phase 4
+didn't already resolve. This is the skill that was missing: existing skills review or QA an
+already-written manuscript; this one writes the manuscript and packages it.
 
 ## Continuity — read this before Phase 0
 
@@ -35,8 +36,9 @@ step did.
 
 **Never pause to ask permission before invoking the next sub-step.** Every skill this pipeline
 composes — `/data-analysis`, `/stata-replication`, `/review-paper --adversarial`,
-`/verify-claims`, `/proofread`, `/humanize`, `/validate-bib`, `/submission-disclosures` — is this
-skill's own internal machinery, not an action that needs a separate go-ahead. "Should I now run
+`/verify-claims`, `/proofread`, `/humanize`, `/validate-bib`, `/submission-disclosures`,
+`/replication-package` (which itself composes `/audit-reproducibility`) — is this skill's own
+internal machinery, not an action that needs a separate go-ahead. "Should I now run
 `/proofread`?" is not a valid thing to ask; just run it.
 
 **Empirical-design and specification decisions escalate to the user by default** — per
@@ -209,6 +211,35 @@ errors, no overfull-hbox warnings past this repo's usual tolerance, and — visu
 `hyperref` link boxes (the `hidelinks` default in `paper-header.tex` should make this automatic;
 if a caller has swapped in `colorlinks`, re-check the rendered PDF, not just the source).
 
+## Phase 4: Replication package
+
+Build the deposit as part of this flow — proceed automatically, same as Phase 2/3, no separate
+go-ahead. Run [`/replication-package`](../replication-package/SKILL.md) against the now-finalized
+manuscript and `outputs_path` from Pre-Flight (a finalized manuscript is a precondition here —
+this phase runs *after* Phase 3, not before, since the package's Table/Figure → script:line map
+is read from the manuscript as it will actually ship, not a draft still being revised).
+
+`/replication-package` itself calls `/audit-reproducibility` (its own Phase 3) and can block:
+
+- **Audit-reproducibility FAIL (a manuscript number doesn't reproduce within tolerance).** This
+  skill is still the fixer: find why (almost always a stale number that didn't get updated after
+  the table/figure it cites changed), fix the manuscript to match the actual `_output`/`_outputs`
+  value, re-run `/replication-package`, repeat until dry — same discipline as every Phase 2 step,
+  not a new one. Never "fix" the direction by editing the script's output to match a wrong
+  manuscript claim.
+- **Restricted/confidential data detected with no access note (its Phase 5).** This is not a
+  specification judgment call — whether data is genuinely restricted, and what the access/DUA
+  process is, is a factual question about the data's provenance, not a defensible-default choice.
+  Route it through Continuity's design-decision escalation (ask, with the usual session-waiver
+  option) unless the source and license are already stated unambiguously elsewhere in the
+  manuscript's Data section, in which case fill in the access note directly and disclose the
+  choice in Judgment calls.
+
+On a clean run (all DCAS checklist items PASS or `[FILL]`, audit PASS/EXPLAINED-only), the
+package lives at `replication_package/` per that skill's own tree — report its location and any
+remaining `[FILL]` items in the Final Report rather than treating an open `[FILL]` as a failure;
+some fields (license choice, deposit target) are the author's call, not this skill's to invent.
+
 ## Final Report
 
 State, in this order:
@@ -229,6 +260,9 @@ State, in this order:
    `paper-writing-craft.md` §4), and anything the Pre-Flight left as "general working paper"
    that a named target journal would instead fix (margins, citation style, length limits).
 5. Confirmation the PDF compiles cleanly as of this report.
+6. **Replication package** (Phase 4) — its location, the DCAS checklist summary, and any open
+   `[FILL]` items left for the author (license choice, deposit target, restricted-data access
+   note if that was escalated rather than resolved autonomously).
 
 ## What this skill does not do
 
@@ -241,8 +275,6 @@ State, in this order:
   Either way, this repository never ships the choice as generic prescriptive content — see
   [`paper-writing-craft.md`](../../rules/paper-writing-craft.md) §5 and
   [`meta-governance.md`](../../rules/meta-governance.md).
-- Does not build a replication package (`/replication-package` is a separate deliverable — offer
-  it as a next step, don't run it automatically, per `CLAUDE.md`'s Scope Discipline).
 - Does not overwrite an existing manuscript without confirming — if `Paper/` (or the named
   target) already has a `.tex` file, ask before replacing it.
 
@@ -253,4 +285,4 @@ State, in this order:
 - [`.claude/rules/figure-visual-quality.md`](../../rules/figure-visual-quality.md) / [`.claude/agents/figure-quality-reviewer.md`](../../agents/figure-quality-reviewer.md) — the rendered-image check for overlapping/illegible figure text (Phase 2 step 2).
 - [`.claude/rules/orchestrator-protocol.md`](../../rules/orchestrator-protocol.md) — the runtime (fan-out/reduce/judge/loop-until-dry) this skill's Phase 2 composes.
 - [`templates/paper/paper-template.tex`](../../../templates/paper/paper-template.tex) / [`Preambles/paper-header.tex`](../../../Preambles/paper-header.tex) — the generic assets drafted into.
-- [`.claude/skills/review-paper/SKILL.md`](../review-paper/SKILL.md), [`verify-claims`](../verify-claims/SKILL.md), [`proofread`](../proofread/SKILL.md), [`humanize`](../humanize/SKILL.md), [`validate-bib`](../validate-bib/SKILL.md), [`submission-disclosures`](../submission-disclosures/SKILL.md) — composed, not modified.
+- [`.claude/skills/review-paper/SKILL.md`](../review-paper/SKILL.md), [`verify-claims`](../verify-claims/SKILL.md), [`proofread`](../proofread/SKILL.md), [`humanize`](../humanize/SKILL.md), [`validate-bib`](../validate-bib/SKILL.md), [`submission-disclosures`](../submission-disclosures/SKILL.md), [`replication-package`](../replication-package/SKILL.md) — composed, not modified.

@@ -124,7 +124,7 @@ A forked subagent cannot stop to ask the user a question. So every interactive c
 
 | Skill | Primitives | Notes |
 |-------|-----------|-------|
-| `/draft-paper` | draft → fan-out review → reduce → judge, **loop-until-dry**, no user prompt between steps | Composes `content-depth-reviewer` (independent check of `paper-writing-craft.md` compliance), `/review-paper --adversarial`, `/verify-claims`, `/proofread`, `/humanize`, `/validate-bib`, `/submission-disclosures` as its own fixer |
+| `/draft-paper` | draft → fan-out review → reduce → judge, **loop-until-dry**, no user prompt between steps | Composes `content-depth-reviewer`, `figure-quality-reviewer`, `/review-paper --adversarial`, `/verify-claims`, `/proofread`, `/humanize`, `/validate-bib`, `/submission-disclosures` as its own fixer, then `/replication-package` (Phase 4) |
 | `/commit` | verify (Step 2), score (Step 6) | Halts on failure; `.githooks/pre-commit` enforces the same gates on every commit |
 | `/seven-pass-review` | fan-out (7 lenses) → reduce → judge **+ hallucination gate** | Submission-ready / R&R papers |
 | `/slide-excellence` | conditional fan-out → reduce | Spawns only lenses that can produce output; does not auto-fix |
