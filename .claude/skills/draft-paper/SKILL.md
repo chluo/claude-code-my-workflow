@@ -127,14 +127,31 @@ Report before Phase 1.
    `\input{}`s `_outputs/`). **The moment that pipeline finishes, continue immediately to step 2
    below in the same turn — do not stop, summarize, or hand back to the user here.** No number in
    any table/figure is ever hand-transcribed; every one comes from `\input{}`-ing `outputs_path`.
+
+   **Check what the supplied data actually contains before treating any field as given.** If the
+   Pre-Flight research question centers on a *measurement construction* (the contribution
+   paragraph will say so — "we construct X," not "we apply X"), and the raw data already
+   contains a precomputed version of that central quantity, decide whether to (a) derive it from
+   the more primitive inputs the data also contains, writing up that derivation for
+   `paper-writing-craft.md` §2 item 8's appendix, or (b) treat the supplied field as authoritative
+   and validate it internally (e.g., check the field against its own stated formula from other
+   supplied components) rather than re-deriving from scratch. This is exactly the kind of
+   specification decision Continuity's design-decision escalation governs — by default, ask;
+   under the design-decision waiver, decide it yourself and disclose the choice (and why) in
+   Judgment calls. **Do not silently default to (b) just because it's less work** — (b) caps how
+   deep the paper's own methodology section and appendix can honestly go, since there is no
+   construction left to explain if the paper never performed one; that gap is a common,
+   avoidable reason an otherwise-rigorous draft reads as thin next to a paper that built the
+   measure from primitives itself.
 2. Copy [`templates/paper/paper-template.tex`](../../../templates/paper/paper-template.tex) and
    [`Preambles/paper-header.tex`](../../../Preambles/paper-header.tex) into place (`Paper/` by
    default, or wherever the Pre-Flight named).
 3. Apply [`paper-writing-craft.md`](../../rules/paper-writing-craft.md) in full: literature
-   density via the strand-by-strand test in §1 (run [`/lit-review`](../lit-review/SKILL.md) first
-   if the literature list doesn't already exist), the structural checklist in §2, the register
-   discipline in §3. This is the actual manuscript prose — the deliverable step 1 was in service
-   of.
+   density via the strand-by-strand test in §1 — extended, per that section, to every assumed
+   parameter and construction choice wherever it appears, not just the introduction — the
+   structural checklist in §2 (including item 8's technical appendix, when step 1 above decided
+   this paper's contribution needs one), and the register discipline in §3. This is the actual
+   manuscript prose — the deliverable step 1 was in service of.
 4. Compile (3-pass XeLaTeX + bibtex, mirroring `CLAUDE.md`'s existing LaTeX command block —
    see "LaTeX toolchain" above if `xelatex` isn't found) and confirm a PDF is produced before
    moving to Phase 2 — a draft that doesn't compile isn't a draft. Continue straight into

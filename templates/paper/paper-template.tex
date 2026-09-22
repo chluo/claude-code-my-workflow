@@ -108,4 +108,52 @@ existing findings — not a request for new diagnostics.]
 
 \bibliography{../Bibliography_base}
 
+% =============================================================================
+% Technical appendix — paper-writing-craft.md §2 item 8. DELETE THIS ENTIRE
+% \appendix block if the paper's contribution is APPLYING an existing,
+% already-published construction rather than introducing a new one. Keep and
+% fill it in only when Section 2/3 above describes a multi-step construction
+% (accounting recategorizations, discount-rate choices, capitalization
+% assumptions, etc.) with its own assumptions — that detail belongs here in
+% full, not compressed into the main text or omitted.
+% =============================================================================
+\appendix
+
+\section{Full Construction of [The Paper's Central Constructed Quantity]}
+\label{app:construction}
+
+[Complete, end-to-end formal specification: the exact formula for every constructed
+intermediate and final quantity, in the same notation as the main text.]
+
+\subsection{Input variables}
+\label{app:construction-inputs}
+
+[Every raw variable used, its source/line-item, and its role — a table, not prose, per
+paper-writing-craft.md's \texttt{booktabs} convention.]
+
+\subsection{Parameters and assumptions}
+\label{app:construction-params}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Parameter values and their support}
+  \label{tab:appendix-params}
+  \begin{tabular}{lp{3.2cm}cp{4.5cm}}
+    \toprule
+    Parameter & Description & Value & Support for assumption \\
+    \midrule
+    $\rho$ & [what it governs] & [value] & [cited literature, or an explicit reasoned
+      justification if no literature bears on it directly] \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+[Every non-obvious value gets a citation or a stated reason — see paper-writing-craft.md §1's
+extension of the literature-density test beyond the introduction.]
+
+\subsection{[Construction step 1]}
+\label{app:construction-step1}
+
+[Full derivation. Repeat one subsection per non-trivial construction step.]
+
 \end{document}

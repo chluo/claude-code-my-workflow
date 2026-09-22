@@ -48,6 +48,14 @@ verify each citation is real and says what you're about to claim it says (this i
 [`/verify-claims`](../skills/verify-claims/SKILL.md) checks after the fact — using `/lit-review`
 first means fewer citations need correcting later).
 
+**This density expectation is not limited to the introduction.** Every non-obvious methodological
+assumption, parameter value, or construction choice — wherever it appears in the paper, including
+an appendix — should be supported by a citation to prior literature when such support plausibly
+exists, or an explicit, reasoned justification stated in the text when it doesn't. "We assume a
+five-year useful life" with no supporting citation, when a literature on asset useful lives
+exists, is a missed citation, not a stylistic choice; a paper with a rich introduction and a bare,
+uncited methodology section has moved the thinness problem, not solved it.
+
 ## 2. Structural checklist
 
 A manuscript earns the label "thorough" when it has all of the following, in this order. None
@@ -83,6 +91,25 @@ framed:
    does *not* show, and what would overturn the headline claim. This is exposition of existing
    findings, not a request to run new diagnostics.
 7. **Conclusion** — restates the contribution and its scope; does not introduce new claims.
+8. **A technical appendix, when the contribution needs one.** If the contribution paragraph
+   claims a measurement, index, or estimator *construction* as the novelty — not merely an
+   application of an existing one — the main text stays readable at a conceptual level (item 3
+   above), and an appendix carries the complete formal specification: the exact formula for every
+   constructed quantity, a table of every assumed parameter with its value and either a citing
+   literature support or an explicit reasoned justification, and the full variable/data-source
+   listing. This is not optional polish on a construction-heavy paper — it is where a reader (or
+   a referee) checks whether the construction is actually right, and a main-text sentence that
+   says "see the Appendix for details" without an appendix behind it is a broken promise, not an
+   appendix. Conversely, don't manufacture an appendix for a paper whose contribution is
+   *applying* an existing, already-published construction — padding for length is its own defect.
+
+**Which papers need item 8, concretely:** if Section 2/3's conceptual section describes multiple
+non-trivial steps (each with its own assumption or judgment call) to go from raw inputs to the
+paper's central constructed quantity, those steps belong in the appendix in full — one formula
+and one parameter per step, each parameter's value defended the same way the main text's claims
+are (§1, above). A single clean formula with no embedded assumptions doesn't need this; a
+construction built from a chain of accounting recategorizations, discount-rate choices, or
+capitalization assumptions does.
 
 ## 3. Register and reporting-language discipline
 

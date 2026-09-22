@@ -50,6 +50,11 @@ state which prior claims this paper agrees with, which it revises, and why. Chec
 - Flag **CRITICAL** if the introduction engages zero prior work by name. Flag **MAJOR** if it
   names only one strand where the paper's own framing (abstract, contribution paragraph) implies
   it is positioning against a body of work, not a single paper.
+- **This check is not intro-only.** Scan the methodology/construction section and any appendix
+  for asserted parameter values or modeling assumptions with no citation ("we assume a five-year
+  life," "we use an 8× multiple," a discount rate, a threshold). Flag **MAJOR** per instance where
+  a supporting or bounding literature plausibly exists and isn't cited — this is the same defect
+  as thin intro engagement, just relocated to where the paper's actual construction lives.
 
 ### 2. Structural completeness (`paper-writing-craft.md` §2)
 
@@ -73,6 +78,16 @@ sub-bullet of §2:
 - Data section: can you reconstruct the analysis sample (source, restrictions, obs. count lost at
   each) from that section alone? Flag **MAJOR** if a restriction is applied without its cost
   stated.
+- **Technical appendix, when the contribution needs one (§2 item 8).** First decide whether this
+  paper's contribution paragraph claims a measurement/estimator *construction* as the novelty. If
+  yes, check for an actual appendix with: the exact formula for every constructed quantity, a
+  parameter table (value + citation/justification per parameter), and the full variable listing.
+  Flag **CRITICAL** if the main text explicitly defers to "the Appendix" (or equivalent) and no
+  such appendix exists — a broken cross-reference to nothing. Flag **MAJOR** if the construction
+  involves multiple non-trivial steps/assumptions and there is no appendix at all covering them,
+  even without an explicit main-text promise. Do **not** flag a paper whose contribution is
+  *applying* an existing, already-published construction for lacking this — manufacturing an
+  appendix there is padding, not rigor.
 
 ### 3. Register / reporting-language discipline (`paper-writing-craft.md` §3)
 
