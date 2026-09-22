@@ -61,6 +61,40 @@ of this conversation (pick the most defensible option), disclosing the assumptio
 Pre-Flight Report or the Judgment calls list rather than asking again. This waiver is separate
 from the design-decision one above — granting one does not grant the other.
 
+## LaTeX toolchain — install automatically if missing, never ask
+
+Before either compile step (Phase 1 step 4, Phase 3), confirm a XeLaTeX toolchain is present
+(`xelatex --version`; also need `bibtex`). **If it's missing, install one yourself, right now,
+with no confirmation step** — do not ask "should I install LaTeX?", and do not pause between
+individual install commands for separate approval; run the sequence straight through, the same
+"never pause to ask permission" policy as the rest of this skill's composed sub-steps.
+
+Detect the platform and use a non-interactive install path — adapt exact flags/package names to
+what's actually detected; the goal is a working, silent, unattended install, not a fixed
+transcript:
+
+- **Windows** — `winget install --id MiKTeX.MiKTeX -e --silent --accept-package-agreements --accept-source-agreements`;
+  then configure MiKTeX to auto-install missing packages rather than prompt for them
+  (`initexmf --set-config-value [MPM]AutoInstall=1`, or whatever the current MiKTeX CLI calls
+  this — check `--help` if the exact flag has moved). If `winget` isn't available, fall back to
+  MiKTeX's basic installer with its documented unattended flag.
+- **macOS** — `brew install --cask basictex` (small, fast); upgrade to `mactex-no-gui` if a
+  compile still fails on a package `tlmgr` can't resolve. Open a fresh shell (or re-source the
+  path helper) so `xelatex`/`tlmgr` land on `PATH` within the same session; `sudo tlmgr install
+  <package>` for anything `basictex` didn't ship.
+- **Linux (Debian/Ubuntu)** — `sudo apt-get update && sudo apt-get install -y texlive-xetex
+  texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra` (`-y` keeps it
+  non-interactive).
+
+**Escalate only if a good-faith install attempt still leaves no working `xelatex`** — no package
+manager available and no viable direct-download path in this environment, or a required step
+demands interactive credentials this session genuinely cannot supply (e.g., a `sudo` password
+prompt with no way to answer it). Only then stop and tell the user what was tried, what failed,
+and what they'd need to do manually. (This governs this skill's own conversational behavior —
+it does not itself change the surrounding session's tool-permission mode; if that mode is
+configured to require approval on every `Bash` call regardless of skill content, that's a
+harness-level setting outside what this file can override.)
+
 ## Phase 0: Pre-Flight (RUN_CONFIG — collect everything before drafting starts)
 
 Per [`orchestration-schemas.md` §5](../../references/orchestration-schemas.md), gather every
@@ -101,9 +135,10 @@ Report before Phase 1.
    if the literature list doesn't already exist), the structural checklist in §2, the register
    discipline in §3. This is the actual manuscript prose — the deliverable step 1 was in service
    of.
-4. Compile (3-pass XeLaTeX + bibtex, mirroring `CLAUDE.md`'s existing LaTeX command block) and
-   confirm a PDF is produced before moving to Phase 2 — a draft that doesn't compile isn't a
-   draft. Continue straight into Phase 2; a compiling PDF is progress, not completion.
+4. Compile (3-pass XeLaTeX + bibtex, mirroring `CLAUDE.md`'s existing LaTeX command block —
+   see "LaTeX toolchain" above if `xelatex` isn't found) and confirm a PDF is produced before
+   moving to Phase 2 — a draft that doesn't compile isn't a draft. Continue straight into
+   Phase 2; a compiling PDF is progress, not completion.
 
 ## Phase 2: Auto-finalize (no user prompt between any of these steps)
 
@@ -143,7 +178,8 @@ consecutive rounds adding zero new CRITICAL/MAJOR findings (by the deterministic
 
 ## Phase 3: Compile + verify
 
-Re-run the 3-pass XeLaTeX + bibtex compile after all fixes land. Confirm: PDF builds with no
+Re-run the 3-pass XeLaTeX + bibtex compile after all fixes land (toolchain should already be
+installed from Phase 1 — re-check "LaTeX toolchain" above if not). Confirm: PDF builds with no
 errors, no overfull-hbox warnings past this repo's usual tolerance, and — visually — no
 `hyperref` link boxes (the `hidelinks` default in `paper-header.tex` should make this automatic;
 if a caller has swapped in `colorlinks`, re-check the rendered PDF, not just the source).
