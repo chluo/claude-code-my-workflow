@@ -153,6 +153,12 @@ graph export "scripts/stata/_outputs/fig_eventstudy.png", replace as(png) width(
 
 Both vector (PDF for the paper) and raster (PNG for slides). Don't rely on the auto-generated `.gph` — it's not portable across Stata versions.
 
+**Exporting without error is not the same as rendering correctly.** For `graph combine` or any
+small-multiple/by-group figure, see [`figure-visual-quality.md`](figure-visual-quality.md) —
+per-panel title text sized for a full standalone graph is the most common cause of overlapping
+text once panels are combined, and the only reliable check is opening the rendered image (the
+`figure-quality-reviewer` agent does this).
+
 ## 9. Common Stata → R / Stata → AEA traps
 
 | Trap | Fix |
@@ -184,6 +190,7 @@ The [AEA Data Editor checklist](https://aeadataeditor.github.io/) requires:
 ## Cross-references
 
 - [`paper-writing-craft.md`](paper-writing-craft.md) — the `\input{}`-only discipline for manuscript tables this rule's `_outputs/` bucket exists to support.
+- [`figure-visual-quality.md`](figure-visual-quality.md) — prevention + mandatory visual check for `graph combine`/small-multiple text overlap.
 - [`r-code-conventions.md`](r-code-conventions.md) — analogous discipline for R-first pipelines.
 - [`replication-protocol.md`](replication-protocol.md) — tolerance contract that applies across R / Stata / Python.
 - [`../references/release-engineering.md`](../references/release-engineering.md) — shipping an `.ado` package or a replication package as a versioned artifact: message and silent-resolution censuses, preflight archives, generated status contracts, downstream pinning.

@@ -2631,7 +2631,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td>Multi-agent workflows</td>
-<td>19 specialized agents for proofreading, layout, pedagogy, code review, fact-checking, AI-voice auditing, manuscript content-depth, simulation + R-package review</td>
+<td>20 specialized agents for proofreading, layout, pedagogy, code review, fact-checking, AI-voice auditing, manuscript content-depth, statistical-figure quality, simulation + R-package review</td>
 </tr>
 <tr class="odd">
 <td>Quality review</td>
@@ -2769,7 +2769,7 @@ You see: &quot;Analysis complete. 3 tables, 4 figures. Score: 85/100.&quot;</cod
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>You talk, Claude orchestrates.</strong> The 19 agents, 61 skills, and 38 rules exist so you don’t have to think about them. Describe your goal, approve the plan, and let the system work.</p>
+<p><strong>You talk, Claude orchestrates.</strong> The 20 agents, 61 skills, and 39 rules exist so you don’t have to think about them. Describe your goal, approve the plan, and let the system work.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -2782,7 +2782,7 @@ You see: &quot;Analysis complete. 3 tables, 4 figures. Score: 85/100.&quot;</cod
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This guide describes the full system — 19 agents, 61 skills, 38 rules. That is the ceiling, not the floor. <strong>Start with just CLAUDE.md and 2–3 skills</strong> (<code>/compile-latex</code>, <code>/proofread</code>, <code>/commit</code>). Add rules and agents as you discover what you need. The template is designed for progressive adoption: fork it, fill in the placeholders, and start working. Everything else is there when you’re ready.</p>
+<p>This guide describes the full system — 20 agents, 61 skills, 39 rules. That is the ceiling, not the floor. <strong>Start with just CLAUDE.md and 2–3 skills</strong> (<code>/compile-latex</code>, <code>/proofread</code>, <code>/commit</code>). Add rules and agents as you discover what you need. The template is designed for progressive adoption: fork it, fill in the placeholders, and start working. Everything else is there when you’re ready.</p>
 </div>
 </div>
 <hr>
@@ -4027,7 +4027,7 @@ APPROVED   NEEDS WORK
 <p><strong>Retired (2026-06-15):</strong> Sonnet 4 and the original Opus 4 are gone. If your environment still pins one (<code>ANTHROPIC_MODEL</code> env, hard-coded model strings), requests fail — migrate to the current tiers in the SSoT.</p>
 </div>
 </div>
-<p>Not all agents need the same model. Each agent file has a <code>model:</code> field in its YAML frontmatter. In v2.0 all 19 agents are <strong>pinned</strong> to an explicit model + effort tier (no longer <code>inherit</code>), following the 70/20/10 routing pattern below. You can re-tune any agent to optimize cost:</p>
+<p>Not all agents need the same model. Each agent file has a <code>model:</code> field in its YAML frontmatter. In v2.0 all 20 agents are <strong>pinned</strong> to an explicit model + effort tier (no longer <code>inherit</code>), following the 70/20/10 routing pattern below. You can re-tune any agent to optimize cost:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 24%">
@@ -7199,7 +7199,7 @@ research-spec.md  ─────────────→  preregistration-dr
 <li><strong>Verify everything.</strong> The verification rule exists for a reason. Never skip compilation or rendering checks.</li>
 <li><strong>Session logs matter.</strong> Document design decisions, not just what changed. Future-you will thank present-you.</li>
 <li><strong>Devil’s Advocate early.</strong> Challenge slide structure before you’ve built 50 slides on a shaky foundation.</li>
-<li><strong>Progressive disclosure.</strong> Start with CLAUDE.md + 2–3 rules. Add more as your workflow matures. Newcomers should not face all 38 rules on day one.</li>
+<li><strong>Progressive disclosure.</strong> Start with CLAUDE.md + 2–3 rules. Add more as your workflow matures. Newcomers should not face all 39 rules on day one.</li>
 <li><strong>Use <code>CLAUDE.local.md</code> for personal overrides.</strong> This file is automatically gitignored and loaded alongside <code>CLAUDE.md</code>. Put machine-specific paths, personal preferences, and local tool versions here — they won’t pollute the shared repo.</li>
 </ol>
 <div class="callout callout-style-default callout-note callout-titled">

@@ -70,7 +70,7 @@ If the paper or data source suggests specific specs (e.g., DiD with `reghdfe`, I
 For each script in numbered order:
 
 1. Dispatch to `stata-mcp` to execute the `.do` file.
-2. Capture the log (Stata writes to `scripts/stata/_outputs/NN_log.smcl` per the header convention) and the resulting `.dta` / `.tex` / `.pdf` outputs.
+2. Capture the log (Stata writes to `scripts/stata/_log/NN_log.smcl` per the header convention) and the resulting `.dta` / `.tex` / `.pdf` outputs in `scripts/stata/_outputs/`.
 3. If a script fails, halt — do NOT auto-fix unless the failure is trivial (typo flagged by Stata at parse time). For substantive failures (insufficient observations, singular matrices, missing covariates), surface to the user.
 
 For long-running scripts (> 2 minutes), use the **Monitor tool** to stream stdout — same pattern documented in `/data-analysis` and `/audit-reproducibility`.
@@ -79,8 +79,12 @@ For long-running scripts (> 2 minutes), use the **Monitor tool** to stream stdou
 
 1. Confirm every expected output exists in `scripts/stata/_outputs/`.
 2. Check `sessionInfo.txt` was captured (package versions).
-3. Run `/audit-reproducibility` if a manuscript exists — it now handles Stata `.dta` outputs via `haven`/`pyreadstat` (Pass 4.3).
-4. Report scripts run, outputs produced, any warnings from Stata.
+3. For any `graph combine` or by-group/small-multiple figure, open the rendered `.png` and check
+   for overlapping or illegible text before reporting it done — a `graph export` exit code alone
+   does not confirm this. See [`figure-visual-quality.md`](../../rules/figure-visual-quality.md);
+   use `figure-quality-reviewer` for more than a couple of figures.
+4. Run `/audit-reproducibility` if a manuscript exists — it now handles Stata `.dta` outputs via `haven`/`pyreadstat` (Pass 4.3).
+5. Report scripts run, outputs produced, any warnings from Stata.
 
 ### Phase 4 (optional): R cross-check
 

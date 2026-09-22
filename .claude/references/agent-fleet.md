@@ -1,6 +1,6 @@
 # Agent Fleet Manifest
 
-The 19 specialist subagents, what each is for, the model tier it runs at ([`model-routing.md`](../rules/model-routing.md)), and which skill dispatches it. This makes the fleet legible — when a fan-out skill picks a lens, this is the roster it picks from. Reviewers are **read-only** (they report `FINDING`s per [`orchestration-schemas.md`](orchestration-schemas.md)); only the fixer edits files.
+The 20 specialist subagents, what each is for, the model tier it runs at ([`model-routing.md`](../rules/model-routing.md)), and which skill dispatches it. This makes the fleet legible — when a fan-out skill picks a lens, this is the roster it picks from. Reviewers are **read-only** (they report `FINDING`s per [`orchestration-schemas.md`](orchestration-schemas.md)); only the fixer edits files.
 
 > **Keep this in sync** with `.claude/agents/*.md` frontmatter (`model:` / `effort:`) and with `model-routing.md`. The surface-sync gate counts agents; it does not yet diff this table row-for-row, so update it when you add or retier an agent. (It is a `references/` file, so it is not itself counted as an agent.)
 
@@ -31,6 +31,7 @@ A wrong "looks fine" from one of these is expensive (a desk-reject, a hallucinat
 | `pedagogy-reviewer` | Narrative arc, prerequisites, worked examples, notation, pacing | read-only | `/pedagogy-review`, `/slide-excellence` |
 | `humanize-auditor` | AI-voice tell detection (10 categories) | read-only | `/humanize` |
 | `content-depth-reviewer` | Compliance with `paper-writing-craft.md` (lit density, structure, register, typesetting) | read-only | `/draft-paper` |
+| `figure-quality-reviewer` | Visually inspects rendered Stata/R figures for overlapping text, illegible sizing, clipped labels | read-only | `/draft-paper`, `/stata-replication`, `/data-analysis` |
 
 ## Apply / translate tier — Sonnet tier, effort: medium
 

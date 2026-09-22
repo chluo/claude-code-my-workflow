@@ -174,23 +174,31 @@ consecutive rounds adding zero new CRITICAL/MAJOR findings (by the deterministic
    an independent reviewer, not a self-check folded into Phase 1. Apply every CRITICAL/MAJOR
    finding directly (write the missing contribution/roadmap paragraph, add the second literature
    strand, fix the `hyperref` config, etc.), re-run the reviewer, repeat until dry.
-2. **Content review** — `/review-paper --adversarial` (or `/seven-pass-review` for a long
+2. **Figure visual quality** — fork `figure-quality-reviewer` (`Agent`, `context: fork`) against
+   every figure the manuscript includes, per [`figure-visual-quality.md`](../../rules/figure-visual-quality.md).
+   Unlike the other Phase 2 checks, a confirmed finding here is fixed at the *generating*
+   `.do`/`.R` script (suppress per-panel titles, set explicit text sizing on combined/faceted
+   graphs, move an obscuring legend), not the manuscript source — re-run the script, re-export
+   the figure, then re-run the reviewer against the new render before calling it dry. A `graph
+   export`/`ggsave` exiting 0 is not evidence the figure is fine; only opening the rendered image
+   is.
+3. **Content review** — `/review-paper --adversarial` (or `/seven-pass-review` for a long
    draft). This skill *is* the fixer: apply every CRITICAL/MAJOR finding directly, re-run the
    review, repeat until dry.
-3. **Claim verification** — `/verify-claims` (CoVe, fresh-context `claim-verifier` fork, per
+4. **Claim verification** — `/verify-claims` (CoVe, fresh-context `claim-verifier` fork, per
    `post-flight-verification.md`). Any HIGH-WARN (fabricated citation, numeric/directional
    contradiction) is fixed and the specific claim re-verified before moving on — the existing
    must-fix policy, not a new one.
-4. **Bibliography** — `/validate-bib`. Fix every structural finding (missing/unused entries,
+5. **Bibliography** — `/validate-bib`. Fix every structural finding (missing/unused entries,
    malformed fields) directly.
-5. **Proofreading** — `/proofread` stays read-only per its own design; this skill applies every
+6. **Proofreading** — `/proofread` stays read-only per its own design; this skill applies every
    reported fix directly (typos, grammar, overflow, consistency), then re-runs `/proofread`,
    looping until dry — the same critic→fixer→re-audit shape as `/qa-quarto`.
-6. **Prose voice** — `/humanize` stays detect-only per its own design (`writing-with-ai.md`; the
+7. **Prose voice** — `/humanize` stays detect-only per its own design (`writing-with-ai.md`; the
    `[LEARN]` lesson that auto-rewriting these degrades quality). Any finding it tags `mechanical`
    is fixed directly; pure AI-voice tells (hedging stacks, boilerplate transitions, tricolon
    abuse, etc.) are **not** rewritten — collect them into the Final Report's punch-list instead.
-7. **Disclosures** — `/submission-disclosures`, using the target journal / disclosure policy
+8. **Disclosures** — `/submission-disclosures`, using the target journal / disclosure policy
    named in Pre-Flight (or a generic AI-use + data-availability block if none was named).
 
 ## Phase 3: Compile + verify
@@ -205,9 +213,9 @@ if a caller has swapped in `colorlinks`, re-check the rendered PDF, not just the
 
 State, in this order:
 
-1. **What was fixed automatically**, grouped by category (content-depth, correctness/CRITICAL,
-   correctness/MAJOR, citations, bibliography, proofreading, mechanical-humanize, disclosures)
-   with counts.
+1. **What was fixed automatically**, grouped by category (content-depth, figure-quality,
+   correctness/CRITICAL, correctness/MAJOR, citations, bibliography, proofreading,
+   mechanical-humanize, disclosures) with counts.
 2. **Judgment calls made autonomously, if either waiver in Continuity was granted this
    conversation** — every RUN_CONFIG field defaulted and every design/specification choice made
    without escalating (sample restrictions, functional form, controls, clustering, robustness
@@ -242,6 +250,7 @@ State, in this order:
 
 - [`.claude/rules/paper-writing-craft.md`](../../rules/paper-writing-craft.md) — the content/structure rule this skill applies.
 - [`.claude/agents/content-depth-reviewer.md`](../../agents/content-depth-reviewer.md) — the independent reviewer that checks Phase 1's draft actually complied with the rule above (Phase 2 step 1).
+- [`.claude/rules/figure-visual-quality.md`](../../rules/figure-visual-quality.md) / [`.claude/agents/figure-quality-reviewer.md`](../../agents/figure-quality-reviewer.md) — the rendered-image check for overlapping/illegible figure text (Phase 2 step 2).
 - [`.claude/rules/orchestrator-protocol.md`](../../rules/orchestrator-protocol.md) — the runtime (fan-out/reduce/judge/loop-until-dry) this skill's Phase 2 composes.
 - [`templates/paper/paper-template.tex`](../../../templates/paper/paper-template.tex) / [`Preambles/paper-header.tex`](../../../Preambles/paper-header.tex) — the generic assets drafted into.
 - [`.claude/skills/review-paper/SKILL.md`](../review-paper/SKILL.md), [`verify-claims`](../verify-claims/SKILL.md), [`proofread`](../proofread/SKILL.md), [`humanize`](../humanize/SKILL.md), [`validate-bib`](../validate-bib/SKILL.md), [`submission-disclosures`](../submission-disclosures/SKILL.md) — composed, not modified.

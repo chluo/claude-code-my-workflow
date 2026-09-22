@@ -91,6 +91,10 @@ Based on the research question:
 - Include proper axis labels (sentence case, units)
 - Export with explicit dimensions: `ggsave(width = X, height = Y)`
 - Save as both `.pdf` and `.png`
+- For `facet_wrap`/`facet_grid` or any manually combined (`patchwork`/`cowplot`) figure: **open
+  the rendered image and check for overlapping/illegible title or strip text before considering
+  it done** — a clean `ggsave()` exit code does not confirm the panel text didn't collide once
+  combined. See [`figure-visual-quality.md`](../../rules/figure-visual-quality.md).
 
 ### Phase 5: Save and Review
 
