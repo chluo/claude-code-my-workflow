@@ -39,27 +39,27 @@ composes — `/data-analysis`, `/stata-replication`, `/review-paper --adversaria
 skill's own internal machinery, not an action that needs a separate go-ahead. "Should I now run
 `/proofread`?" is not a valid thing to ask; just run it.
 
-**Empirical-design and specification choices are your judgment call, not an escalation.**
-[`credible-claims.md`](../../skills/credible-claims/SKILL.md)'s standing rule 3 says
-identification, sample, and specification decisions always return to the researcher — this skill
-**deliberately overrides that default**, on explicit user instruction, for the scope of
-`/draft-paper` only (that standing rule is unchanged for every other skill). Sample
-restrictions, functional form, control sets, clustering level, robustness checks run: decide
-these yourself using ordinary best-practice defaults for the design at hand, exactly as
-`/data-analysis` Phase 3 already does when run standalone. Do not stop to ask which
-specification to run. The override is not silence, though — every non-obvious choice you make
-goes in the Final Report's **Judgment calls** list (below), so the record survives even though
-approval wasn't sought first.
+**Empirical-design and specification decisions escalate to the user by default** — per
+[`credible-claims.md`](../../skills/credible-claims/SKILL.md) standing rule 3, identification,
+sample, and specification choices always return to the researcher, and this skill does not
+override that. When one of these comes up, ask via `AskUserQuestion` as usual, but **always
+include a waiver option among the choices**, worded along the lines of *"Use your judgment on
+this and don't escalate design decisions like this for the rest of the session."* If the user
+selects it, treat every subsequent design decision as a judgment call for the remainder of this
+conversation — decide it yourself using ordinary best-practice defaults, do not ask again, and
+log it in the Final Report's **Judgment calls** list instead. This waiver is scoped to design
+decisions specifically; it does not also cover the general-clarification waiver below, and a
+waiver granted in an earlier turn of this same conversation still applies to a later
+`/draft-paper` invocation within it (forked runs inherit conversation history) — but check
+whether it was actually granted before assuming so.
 
-**Reserve `AskUserQuestion` for two cases only:** (a) no reasonable default exists and the
-candidate approaches would produce materially different, non-interchangeable papers (not "which
-of these two defensible specifications" — that's a judgment call per above; more like "the
-research question as stated is compatible with two entirely different datasets and there's no
-way to infer which one is meant"), or (b) something makes proceeding practically impossible —
-missing or unreadable data, no research question or topic given at all, a named target journal
-that doesn't exist in `journal-profiles.md` and has no reasonable generic fallback. Everything
-else: pick the most defensible option, state the assumption in the Pre-Flight Report or the
-Judgment calls list, and keep going.
+**Use `AskUserQuestion` whenever a RUN_CONFIG field or other input is genuinely unresolvable
+from context — never mid-draft.** Same pattern: the question's options must always include a
+waiver — *"Use your judgment on choices like this and stop asking for the rest of the
+session."* If granted, resolve every subsequent genuinely-ambiguous field yourself for the rest
+of this conversation (pick the most defensible option), disclosing the assumption in the
+Pre-Flight Report or the Judgment calls list rather than asking again. This waiver is separate
+from the design-decision one above — granting one does not grant the other.
 
 ## Phase 0: Pre-Flight (RUN_CONFIG — collect everything before drafting starts)
 
@@ -77,12 +77,11 @@ run_config:
   max_rounds: 5                                # loop-until-dry fallback cap, per orchestrator-protocol
 ```
 
-Resolve every field yourself where a reasonable default exists (see the Continuity section above
-for exactly when `AskUserQuestion` is warranted instead — it's narrower than "any field is
-unclear"). Typical defaults: no `target_journal` named → "general working paper"; `authors`
-unspecified → placeholders; `analysis_tool` inferable from what's already in `scripts/` or
-`data/` → infer it, don't ask. Echo the resolved RUN_CONFIG back as a Pre-Flight Report before
-Phase 1, including a one-line note on any field you defaulted rather than were told.
+If any required field is genuinely unresolvable from context, use `AskUserQuestion` **now** —
+never mid-draft — including the general-clarification waiver option described in Continuity
+above (unless that waiver was already granted earlier this conversation, in which case resolve
+it yourself and note the assumption instead). Echo the resolved RUN_CONFIG back as a Pre-Flight
+Report before Phase 1.
 
 ## Phase 1: Draft
 
@@ -156,11 +155,12 @@ State, in this order:
 1. **What was fixed automatically**, grouped by category (content-depth, correctness/CRITICAL,
    correctness/MAJOR, citations, bibliography, proofreading, mechanical-humanize, disclosures)
    with counts.
-2. **Judgment calls made autonomously** — every RUN_CONFIG field defaulted rather than confirmed,
-   and every empirical-design/specification choice made without escalating (sample restrictions,
-   functional form, controls, clustering, robustness checks run) per the Continuity section's
-   override of `credible-claims.md` rule 3. This is the transparency the skipped escalation owes
-   the user — not optional, even when nothing here is wrong.
+2. **Judgment calls made autonomously, if either waiver in Continuity was granted this
+   conversation** — every RUN_CONFIG field defaulted and every design/specification choice made
+   without escalating (sample restrictions, functional form, controls, clustering, robustness
+   checks run) after the corresponding waiver was given. This is the transparency the skipped
+   escalation owes the user — not optional, even when nothing here is wrong. Omit this section
+   entirely if no waiver was granted and every genuinely ambiguous point escalated normally.
 3. **The AI-voice punch-list** (if `/humanize` found anything non-mechanical) — the only items
    left requiring the user's own editorial judgment, per `writing-with-ai.md`.
 4. **Remaining placeholders** — author names, institution, and anything the Pre-Flight left as
@@ -170,13 +170,15 @@ State, in this order:
 
 ## What this skill does not do
 
-- Makes concrete specification choices for the one paper at hand (Continuity section, above) —
-  but never ships or asserts a generic "use estimator X" rule as content, and never treats its
-  own choice as beyond challenge: Phase 2's `/review-paper` still judges whether *this specific*
-  choice was sound, exactly as it would for a human-drafted paper. The distinction that matters:
-  doing the work autonomously is not the same as this repository prescribing methodology to
-  users in general, which stays vetoed per [`paper-writing-craft.md`](../../rules/paper-writing-craft.md) §5
-  and [`meta-governance.md`](../../rules/meta-governance.md).
+- By default, does not choose an estimator, diagnostic, or identification strategy — those
+  decisions escalate to the user per `credible-claims.md` rule 3, exactly as they would outside
+  this skill (Continuity, above). If the user has granted the design-decision waiver earlier in
+  the conversation, Phase 1 makes these choices autonomously for the rest of it instead, and
+  discloses each one in the Final Report's Judgment-calls list; `/review-paper` still judges
+  whether the specific choice made was sound, exactly as it would for a human-drafted paper.
+  Either way, this repository never ships the choice as generic prescriptive content — see
+  [`paper-writing-craft.md`](../../rules/paper-writing-craft.md) §5 and
+  [`meta-governance.md`](../../rules/meta-governance.md).
 - Does not build a replication package (`/replication-package` is a separate deliverable — offer
   it as a next step, don't run it automatically, per `CLAUDE.md`'s Scope Discipline).
 - Does not overwrite an existing manuscript without confirming — if `Paper/` (or the named
