@@ -189,7 +189,7 @@ This workflow is designed as a **single hub for an entire research program** —
 ## What's Included
 
 <details>
-<summary><strong>18 agents, 61 skills, 38 rules, 8 hooks</strong> (click to expand)</summary>
+<summary><strong>19 agents, 61 skills, 38 rules, 8 hooks</strong> (click to expand)</summary>
 
 ### Agents (`.claude/agents/`)
 
@@ -211,6 +211,7 @@ This workflow is designed as a **single hub for an entire research program** —
 | `domain-referee` (v1.5.0) | Disposition-primed substance referee for `--peer` mode |
 | `methods-referee` (v1.5.0+) | Paper-type-aware methodology referee (6 paper types) |
 | `humanize-auditor` (v1.9.0) | Read-only AI-voice auditor invoked by `/humanize` |
+| `content-depth-reviewer` | Read-only auditor for `paper-writing-craft.md` compliance (lit density, structure, typesetting), invoked by `/draft-paper` |
 | `promote-memory-council` (v1.9.0) | Five-critic council for `[LEARN]` promotion to MEMORY.md |
 | `sim-reviewer` (v1.10.0) | Monte Carlo simulation reviewer — DGP/estimand match, Monte Carlo SE, coverage-vs-truth, claims↔tables parity |
 | `r-package-reviewer` (v1.10.0) | R package-source reviewer — DESCRIPTION/NAMESPACE hygiene, roxygen completeness, testthat coverage, CRAN-policy red flags |

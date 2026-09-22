@@ -71,6 +71,7 @@ Cost reduction on routed skills is typically **50–80%** with no quality loss o
 - **Proofread inspection** (`proofreader`).
 - **Quarto fix application** when the fix is a `quarto-critic`-driven edit.
 - **AI-voice audit** (`humanize-auditor`).
+- **Manuscript content-depth audit** (`content-depth-reviewer`) — literature density, structure, typesetting.
 - **Beamer ↔ Quarto translation** (`beamer-translator`) — translation is bounded enough to live here unless the source TeX has unusual TikZ.
 
 ### High-judgment (Opus tier)

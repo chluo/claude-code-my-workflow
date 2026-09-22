@@ -131,9 +131,18 @@ tells of an unpolished LaTeX default:
   [`journal-profiles.md`](../references/journal-profiles.md) and
   [`/submission-disclosures`](../skills/submission-disclosures/SKILL.md).
 
+## Enforcement
+
+Applying this rule is the drafter's job; **checking** it is a separate, independent step — a
+drafter cannot be trusted to grade its own compliance with the rule it just applied (the same
+principle as [`review-fencing.md`](review-fencing.md)). [`content-depth-reviewer`](../agents/content-depth-reviewer.md)
+is the read-only agent whose entire job is this rule's four sections; `/draft-paper` fans out to
+it in Phase 2 as an independent check, not a rubber stamp on Phase 1's own drafting pass.
+
 ## Cross-references
 
 - [`.claude/skills/draft-paper/SKILL.md`](../skills/draft-paper/SKILL.md) — the skill that applies this rule end to end, then auto-runs QA.
+- [`.claude/agents/content-depth-reviewer.md`](../agents/content-depth-reviewer.md) — the independent reviewer that checks compliance with this rule (all four sections above).
 - [`.claude/skills/lit-review/SKILL.md`](../skills/lit-review/SKILL.md) — build the citation list this rule requires, before drafting.
 - [`.claude/rules/writing-with-ai.md`](writing-with-ai.md) — prose register and the human-readable standard.
 - [`.claude/rules/inference-robustness.md`](inference-robustness.md) — the statistical-rigor side this rule deliberately does not touch.

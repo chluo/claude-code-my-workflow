@@ -83,23 +83,31 @@ it does not reimplement verification. Loop-until-dry applies across the whole se
 consecutive rounds adding zero new CRITICAL/MAJOR findings (by the deterministic
 `sha1(file:line:locus)` id) ends the loop; `run_config.max_rounds` is the fallback cap.
 
-1. **Content review** — `/review-paper --adversarial` (or `/seven-pass-review` for a long
+1. **Content-depth & structure review** — fork `content-depth-reviewer` (`Agent`, `context: fork`)
+   against [`paper-writing-craft.md`](../../rules/paper-writing-craft.md)'s four sections
+   (literature-engagement density, structural completeness, register discipline, typesetting
+   checklist). This is the check that catches "thin draft" symptoms specifically — a drafter
+   cannot be trusted to grade its own compliance with the rule it just applied, so this runs as
+   an independent reviewer, not a self-check folded into Phase 1. Apply every CRITICAL/MAJOR
+   finding directly (write the missing contribution/roadmap paragraph, add the second literature
+   strand, fix the `hyperref` config, etc.), re-run the reviewer, repeat until dry.
+2. **Content review** — `/review-paper --adversarial` (or `/seven-pass-review` for a long
    draft). This skill *is* the fixer: apply every CRITICAL/MAJOR finding directly, re-run the
    review, repeat until dry.
-2. **Claim verification** — `/verify-claims` (CoVe, fresh-context `claim-verifier` fork, per
+3. **Claim verification** — `/verify-claims` (CoVe, fresh-context `claim-verifier` fork, per
    `post-flight-verification.md`). Any HIGH-WARN (fabricated citation, numeric/directional
    contradiction) is fixed and the specific claim re-verified before moving on — the existing
    must-fix policy, not a new one.
-3. **Bibliography** — `/validate-bib`. Fix every structural finding (missing/unused entries,
+4. **Bibliography** — `/validate-bib`. Fix every structural finding (missing/unused entries,
    malformed fields) directly.
-4. **Proofreading** — `/proofread` stays read-only per its own design; this skill applies every
+5. **Proofreading** — `/proofread` stays read-only per its own design; this skill applies every
    reported fix directly (typos, grammar, overflow, consistency), then re-runs `/proofread`,
    looping until dry — the same critic→fixer→re-audit shape as `/qa-quarto`.
-5. **Prose voice** — `/humanize` stays detect-only per its own design (`writing-with-ai.md`; the
+6. **Prose voice** — `/humanize` stays detect-only per its own design (`writing-with-ai.md`; the
    `[LEARN]` lesson that auto-rewriting these degrades quality). Any finding it tags `mechanical`
    is fixed directly; pure AI-voice tells (hedging stacks, boilerplate transitions, tricolon
    abuse, etc.) are **not** rewritten — collect them into the Final Report's punch-list instead.
-6. **Disclosures** — `/submission-disclosures`, using the target journal / disclosure policy
+7. **Disclosures** — `/submission-disclosures`, using the target journal / disclosure policy
    named in Pre-Flight (or a generic AI-use + data-availability block if none was named).
 
 ## Phase 3: Compile + verify
@@ -113,8 +121,9 @@ if a caller has swapped in `colorlinks`, re-check the rendered PDF, not just the
 
 State, in this order:
 
-1. **What was fixed automatically**, grouped by category (content/CRITICAL, content/MAJOR,
-   citations, bibliography, proofreading, mechanical-humanize, disclosures) with counts.
+1. **What was fixed automatically**, grouped by category (content-depth, correctness/CRITICAL,
+   correctness/MAJOR, citations, bibliography, proofreading, mechanical-humanize, disclosures)
+   with counts.
 2. **The AI-voice punch-list** (if `/humanize` found anything non-mechanical) — the only items
    left requiring the user's own editorial judgment, per `writing-with-ai.md`.
 3. **Remaining placeholders** — author names, institution, and anything the Pre-Flight left as
@@ -136,6 +145,7 @@ State, in this order:
 ## Cross-references
 
 - [`.claude/rules/paper-writing-craft.md`](../../rules/paper-writing-craft.md) — the content/structure rule this skill applies.
+- [`.claude/agents/content-depth-reviewer.md`](../../agents/content-depth-reviewer.md) — the independent reviewer that checks Phase 1's draft actually complied with the rule above (Phase 2 step 1).
 - [`.claude/rules/orchestrator-protocol.md`](../../rules/orchestrator-protocol.md) — the runtime (fan-out/reduce/judge/loop-until-dry) this skill's Phase 2 composes.
 - [`templates/paper/paper-template.tex`](../../../templates/paper/paper-template.tex) / [`Preambles/paper-header.tex`](../../../Preambles/paper-header.tex) — the generic assets drafted into.
 - [`.claude/skills/review-paper/SKILL.md`](../review-paper/SKILL.md), [`verify-claims`](../verify-claims/SKILL.md), [`proofread`](../proofread/SKILL.md), [`humanize`](../humanize/SKILL.md), [`validate-bib`](../validate-bib/SKILL.md), [`submission-disclosures`](../submission-disclosures/SKILL.md) — composed, not modified.
