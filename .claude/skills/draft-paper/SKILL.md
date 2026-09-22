@@ -19,6 +19,22 @@ already-written manuscript; this one writes the manuscript and packages it.
 
 ## Continuity — read this before Phase 0
 
+**Invoking this skill is itself the check-in — no earlier standing preference pauses it
+mid-run.** If something earlier in this project set a general expectation to check in between
+phases of work while the user is still learning the workflow (e.g., "for the first few sessions,
+check in with me a bit more often," or "get approval before moving to a new phase") — that
+preference governs **which tasks get their own plan-and-approval cycle in the first place.** It
+does not mean execution should pause partway through a task the user has already explicitly
+requested by invoking `/draft-paper`. This skill's own phase structure — Pre-Flight through
+Phase 4 and the exit checkpoint below — **is** the complete, single unit of work that preference
+already approved by name; there is no "config adaptation" phase versus "data pipeline" phase
+inside it that independently warrants its own pause. If project config (CLAUDE.md placeholders,
+environment setup) genuinely needs adaptation before this flow can proceed, that is a Phase 0/1
+precondition to absorb inline — the same discipline as the LaTeX toolchain and the
+analysis-outputs precondition below — never a separate task with its own plan, approval, and
+stopping point. If a standing "check in more often" preference and an explicit invocation of
+this skill seem to conflict, **the explicit invocation wins for the scope of this run.**
+
 **This is one uninterrupted task from Pre-Flight to Final Report.** There are exactly two valid
 places to end a turn: the `AskUserQuestion` escalations described below, and the Final Report at
 the very end of Phase 4 — which itself must end with the permission check described immediately
@@ -66,15 +82,21 @@ from the design-decision one above — granting one does not grant the other.
 ## Exit checkpoint — never end this skill's turn without asking first
 
 **This is the backstop for everything above, added because the failure mode above was observed
-in practice: a run stopped silently after Phase 1's data analysis, with no manuscript ever
-drafted, and required a fresh invocation to notice and finish.** The instruction "keep going, do
-not stop" is necessary but is exactly the instruction that failed once already — so it is not
-sufficient on its own. This rule is the guarantee layered on top of it:
+in practice, twice, in two different shapes.** First: a run stopped silently after Phase 1's data
+analysis, with no manuscript ever drafted, requiring a fresh invocation to notice and finish. The
+"keep going, do not stop" instruction added after that was necessary but was exactly the
+instruction that had just failed — not sufficient alone. Second, even after that fix: a run
+treated "adapting project config" as a complete phase in its own right and stopped to check in
+before "the next phase" (per a standing, general check-in-cadence preference from earlier in the
+project — see the precedence rule above), never reaching Phase 0's own Pre-Flight at all. This
+rule is the guarantee layered on top of both:
 
 **You may never end this skill's turn — for any reason — without an explicit permission check.**
 This applies uniformly: to the legitimate completion after Phase 4, to any escalation elsewhere
-in this skill, and to any other point where you find yourself about to stop. Before ending the
-turn, always:
+in this skill, and to any other point where you find yourself about to stop — including a stop
+that feels justified by a general standing preference to check in often. **A standing check-in
+preference is not, by itself, a genuine blocker** (see the precedence rule above) — it is not a
+reason this rule's step 2 treats as license to stop. Before ending the turn, always:
 
 1. State exactly what is done and what is not, against the phase list (Pre-Flight; Phase 1
    steps 1–4; each Phase 2 sub-step, converged or not; Phase 3 compile; Phase 4 package).
