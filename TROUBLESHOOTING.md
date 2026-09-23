@@ -120,7 +120,23 @@ You ran `03_analyze.R` directly instead of `00_run_all.R`. Re-run `00_run_all.R`
 
 ### "Prompts fire despite `bypassPermissions`"
 
-Mid-session permission-mode toggles override file settings until session end. The 6-tier stack (VSCode user → VSCode workspace → CLI user `~/.claude/settings.json` → project `.claude/settings.json` → project-local `.claude/settings.local.json` → in-session runtime) is **last-wins**. Run `/permission-check` — it diffs every layer and reports which wins. Then either exit and restart the session, or `/permission-mode bypassPermissions` to set it for the current session.
+**Root cause #1, verified against Anthropic's permission-modes docs (2026-09): `permissions.defaultMode: "bypassPermissions"` set in *project*-level `.claude/settings.json` or `.claude/settings.local.json` does not take effect at all.** Claude Code explicitly excludes those two files from honoring that value (and `"auto"`) — the session starts in Manual mode instead, which prompts on nearly everything. This is a hard exclusion by design (a checked-in repo must not be able to grant itself full bypass to anyone who clones it), not a precedence nuance in the 6-tier stack below. **This template's own `.claude/settings.json` sets exactly this value** — meaning it has never actually activated bypass for anyone who forks this repo and starts an ordinary terminal session, regardless of what else is configured. If you want the fast, no-prompt experience this template's own settings.json implies, set it yourself in `~/.claude/settings.json` (user-level, personal, never committed):
+
+```json
+{ "permissions": { "defaultMode": "bypassPermissions" } }
+```
+
+or pass `--permission-mode bypassPermissions` / `--dangerously-skip-permissions` as a CLI flag — both are honored regardless of project settings. (`.claude/settings.json` here keeps the project-level `defaultMode` line anyway, since it documents intent and every *other* `permissions.defaultMode` value — `default`, `acceptEdits`, `plan`, `dontAsk` — *does* apply from project settings.)
+
+**Root cause #2:** mid-session permission-mode toggles override file settings until session end. The 6-tier stack (VSCode user → VSCode workspace → CLI user `~/.claude/settings.json` → project `.claude/settings.json` → project-local `.claude/settings.local.json` → in-session runtime) is **last-wins** for every mode value *except* the exclusion above. Run `/permission-check` — it diffs every layer and reports which wins. Then either exit and restart the session, or `/permission-mode bypassPermissions` to set it for the current session.
+
+### Only some Bash commands prompt — especially ones with `$(...)`
+
+Verified against Anthropic's permissions docs (2026-09): Claude Code splits compound commands at shell operators (`&&`, `||`, `;`, `|`, `|&`, `&`, newlines) **and recurses into subshells, command substitution (`$(...)`, backticks), and control-flow bodies** — each nested piece is checked against `allow`/`deny`/`ask` rules independently, the same as a top-level subcommand. A broad, unprefixed `Bash(*)` allow rule (bare `*`) matches anything, including subshell content, trivially. But a **narrower, prefix-scoped allowlist** (`Bash(git *)`, `Bash(npm *)`, etc. — which [Auto Mode's](https://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode) own `/auto-mode-setup` explicitly steers you toward, since it offers to *remove* broad `Bash(*)` rules as unsafe) won't cover whatever small utility command lives *inside* a `$(...)` — `$(pwd)`, `$(date)`, `$(git rev-parse --show-toplevel)` are common idioms in this workflow's own scripts — unless that inner command's own prefix is *also* separately allowed. That's why `$(...)`-bearing commands specifically keep prompting even when the "main" command type is covered: the inner command needs its own match, the outer one isn't enough.
+
+Fix: either keep a broad `Bash(*)` allow rule (works, but is exactly what Auto Mode's own setup flow flags as unsafe and may offer to remove), or explicitly allow the specific utility-command prefixes this workflow's scripts embed in subshells (`Bash(pwd)`, `Bash(date *)`, `Bash(git rev-parse *)`, etc.) alongside the "main" ones.
+
+One related scope note: `autoMode.allow`/`soft_deny`/`hard_deny`/`environment` (Auto Mode's own classifier customization) are read **only** from `~/.claude/settings.json` or managed/`--settings` sources — never from project `.claude/settings.json` or `.claude/settings.local.json`, specifically so a checked-in repo can't inject its own classifier rules. This template cannot ship `autoMode` customization for forkers at all; it is inherently a personal, per-machine setting each person configures for themselves.
 
 ### `/permission-check` asks before reading `~/.claude/`
 

@@ -137,6 +137,8 @@ The key insight: each enforces independence differently — role tension, depend
 
 [LEARN:permissions] **Protected-path behavior is mode-dependent — re-verify, never assume** (re-verified 2026-08-22 vs the permission-modes doc: `bypassPermissions` disables prompts and safety checks INCLUDING protected paths — the earlier "`.claude/` always prompts" version of this entry was stale). Auto mode classifier-gates risky actions and since 2026-08-14 is the built-in starting mode on Pro/Max/Team. Forkers in default mode still see prompts on `.claude/` edits.
 
+**Addendum, 2026-09-23:** only true once bypass is actually active — project-level settings files are excluded from honoring `defaultMode: "bypassPermissions"`/`"auto"` at all, so this repo's own setting never activates bypass for a forker; needs `~/.claude/settings.json` or a CLI flag. Also, Bash rules recurse into `$(...)`, so a narrow allowlist still prompts on subshell-embedded commands. Detail: `TROUBLESHOOTING.md`.
+
 [LEARN:vscode] **`claudeCode.allowDangerouslySkipPermissions` is a typo trap** — the canonical key has NO `claudeCode.` prefix (unlike `claudeCode.initialPermissionMode`). The wrong key is silently ignored. Documented in `TROUBLESHOOTING.md`.
 
 [LEARN:edits] **Batch edits to protected `.claude/` paths: use Bash + `python3` heredoc.** Edit fires the protected-paths gate; Bash does not. For 5+ edits, one read→modify→write script via Bash avoids the prompt storm.
