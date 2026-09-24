@@ -62,22 +62,61 @@ internal machinery, not an action that needs a separate go-ahead. "Should I now 
 sample, and specification choices always return to the researcher, and this skill does not
 override that. When one of these comes up, ask via `AskUserQuestion` as usual, but **always
 include a waiver option among the choices**, worded along the lines of *"Use your judgment on
-this and don't escalate design decisions like this for the rest of the session."* If the user
-selects it, treat every subsequent design decision as a judgment call for the remainder of this
+this and don't escalate design decisions like this for the rest of the session"* — **plus the
+broader "switch to full contractor mode" option described below**, since a user facing this
+escalation may want both waivers at once, not just this one. If the user selects the narrower
+waiver, treat every subsequent design decision as a judgment call for the remainder of this
 conversation — decide it yourself using ordinary best-practice defaults, do not ask again, and
 log it in the Final Report's **Judgment calls** list instead. This waiver is scoped to design
-decisions specifically; it does not also cover the general-clarification waiver below, and a
-waiver granted in an earlier turn of this same conversation still applies to a later
-`/draft-paper` invocation within it (forked runs inherit conversation history) — but check
-whether it was actually granted before assuming so.
+decisions specifically; it does not also cover the general-clarification waiver below (contractor
+mode covers both at once — see below), and a waiver granted in an earlier turn of this same
+conversation still applies to a later `/draft-paper` invocation within it (forked runs inherit
+conversation history) — but check whether it was actually granted before assuming so.
 
 **Use `AskUserQuestion` whenever a RUN_CONFIG field or other input is genuinely unresolvable
 from context — never mid-draft.** Same pattern: the question's options must always include a
 waiver — *"Use your judgment on choices like this and stop asking for the rest of the
-session."* If granted, resolve every subsequent genuinely-ambiguous field yourself for the rest
-of this conversation (pick the most defensible option), disclosing the assumption in the
+session"* — **plus the "switch to full contractor mode" option described below**. If the
+narrower waiver is granted, resolve every subsequent genuinely-ambiguous field yourself for the
+rest of this conversation (pick the most defensible option), disclosing the assumption in the
 Pre-Flight Report or the Judgment calls list rather than asking again. This waiver is separate
-from the design-decision one above — granting one does not grant the other.
+from the design-decision one above (contractor mode covers both at once — see below) — granting
+one alone does not grant the other.
+
+## Contractor mode — one switch for both waivers
+
+The two waivers above are independent by design, so getting full autonomy normally means
+triggering and granting each separately as it happens to come up. **Contractor mode is a single,
+explicit toggle that grants both at once** — named after how some users frame full autonomy at
+their own project's kickoff: *"switch to contractor mode — coordinate everything autonomously
+and only come back to me when there's ambiguity or a decision to make."* That framing isn't part
+of this template's own content; the name just recognizes it as a phrase worth recognizing when a
+user says it, generically, on any project.
+
+- **How it's invoked.** The user says something to this effect — "switch to contractor mode,"
+  "full contractor mode," "go full autonomous" — at any point: before invoking `/draft-paper`,
+  in the Pre-Flight Report exchange, or mid-run. It is also always offered as an explicit third
+  option alongside the narrower waiver in every design-decision and general-clarification
+  `AskUserQuestion` (see the two waiver paragraphs above) — worded along the lines of *"Switch to
+  full contractor mode — decide this and everything like it for the rest of this run, only
+  escalating genuine blockers,"* so a user answering the first escalation of either kind doesn't
+  have to wait for the second kind to also opt in.
+- **What it grants.** Immediately treats both waivers above as granted for the remainder of the
+  conversation — every subsequent design/specification decision and every subsequent genuinely-
+  ambiguous field are resolved autonomously, using the same defensible-default judgment either
+  waiver alone would apply, with the same disclosure obligation (every such decision still goes
+  in the Final Report's Judgment calls list — contractor mode changes who decides, never whether
+  it's reported).
+- **What it does not touch.** Contractor mode governs the two waivers only. It does **not**
+  disable the Exit Checkpoint's own final permission ask (below) — that mechanism exists to
+  catch silent premature stopping, a different failure mode than escalation frequency, and stays
+  in force regardless of how much autonomy has been granted elsewhere. It also does not touch
+  genuine blockers — missing/unreadable data, no research question given, a target journal with
+  no reasonable fallback — those still halt and ask, contractor mode or not, because there is no
+  defensible default to fall back on.
+- **Discoverability.** Mention contractor mode as an available option in the Pre-Flight Report
+  itself (one line is enough) so a user doesn't have to already know the phrase from an earlier
+  session to use it.
 
 ## Exit checkpoint — never end this skill's turn without asking first
 
@@ -160,13 +199,15 @@ run_config:
   target_journal: [name, or "general working paper" if none]
   disclosure_policy: [from target_journal, or generic if none named]
   max_rounds: 5                                # loop-until-dry fallback cap, per orchestrator-protocol
+  contractor_mode: false                       # true if the user invoked it before/during this Pre-Flight — see Continuity
 ```
 
 If any required field is genuinely unresolvable from context, use `AskUserQuestion` **now** —
 never mid-draft — including the general-clarification waiver option described in Continuity
 above (unless that waiver was already granted earlier this conversation, in which case resolve
 it yourself and note the assumption instead). Echo the resolved RUN_CONFIG back as a Pre-Flight
-Report before Phase 1.
+Report before Phase 1, and include one line noting contractor mode is available on request (per
+Continuity) if it hasn't already been invoked for this run.
 
 ## Phase 1: Draft
 
@@ -296,12 +337,14 @@ State, in this order:
 1. **What was fixed automatically**, grouped by category (content-depth, figure-quality,
    correctness/CRITICAL, correctness/MAJOR, citations, bibliography, proofreading,
    mechanical-humanize, disclosures) with counts.
-2. **Judgment calls made autonomously, if either waiver in Continuity was granted this
-   conversation** — every RUN_CONFIG field defaulted and every design/specification choice made
-   without escalating (sample restrictions, functional form, controls, clustering, robustness
-   checks run) after the corresponding waiver was given. This is the transparency the skipped
-   escalation owes the user — not optional, even when nothing here is wrong. Omit this section
-   entirely if no waiver was granted and every genuinely ambiguous point escalated normally.
+2. **Judgment calls made autonomously, if either waiver (or contractor mode) was granted this
+   conversation** — state which was active (design-decision waiver, general-clarification
+   waiver, or full contractor mode covering both) and when it was granted, then every RUN_CONFIG
+   field defaulted and every design/specification choice made without escalating (sample
+   restrictions, functional form, controls, clustering, robustness checks run) as a result. This
+   is the transparency the skipped escalation owes the user — not optional, even when nothing
+   here is wrong. Omit this section entirely if nothing was granted and every genuinely ambiguous
+   point escalated normally.
 3. **The AI-voice punch-list** (if `/humanize` found anything non-mechanical) — the only items
    left requiring the user's own editorial judgment, per `writing-with-ai.md`.
 4. **Remaining placeholders** — author names, institution, the acknowledgment footnote if there
